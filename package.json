@@ -6,6 +6,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.49.1"
+    "@supabase/supabase-js": "^2.49.1",
+    "qrcode": "1.5.4"
   }
 }
