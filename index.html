@@ -34,6 +34,20 @@
 @keyframes programmeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.programme-panel *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media(max-width:600px){.programme-panel{padding:16px;border-radius:19px}.programme-head{display:block}.programme-hours{display:inline-flex;margin-top:13px}.programme-tabs{gap:6px}.programme-tab{padding:9px 7px;gap:6px;border-radius:12px}.programme-tab-index{flex-basis:27px;height:29px;border-radius:8px;font-size:9px}.programme-tab b{font-size:10px}.programme-tab small{font-size:9px}.programme-tab-arrow{display:none}.programme-dayline-note{margin-left:0;width:100%}.programme-item{grid-template-columns:43px 12px minmax(0,1fr);gap:7px;padding:11px 4px}.programme-duration{display:none}.programme-time{font-size:12px}.programme-item-copy strong{font-size:11px}.programme-item-copy small{font-size:9px}}
 
+
+/* Minimal event cards and a dedicated programme section */
+.event-type-mark{display:inline-block;width:6px;height:6px;flex:0 0 6px;margin:6px 3px 0 0;border-radius:50%;background:#4c78c9;box-shadow:0 0 0 3px #edf3fc}
+.event-top .tag{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;font-size:9px;letter-spacing:.035em}
+.event{border-radius:14px;box-shadow:0 2px 8px rgba(16,35,63,.025)}
+.event:hover{transform:translateY(-2px);border-color:#d2deed;box-shadow:0 10px 24px rgba(16,35,63,.07)}
+.event-content{padding:15px}
+.event h4{margin:10px 0 6px;font-size:14px;letter-spacing:-.01em}
+.event .desc{min-height:0;margin-bottom:12px}
+.event-art-label,.event-photo{display:none!important}
+.programme-section{max-width:1180px;margin:0 auto;padding:8px 20px 36px;scroll-margin-top:20px}
+.programme-wrap{width:100%}
+.programme-panel{margin:0}
+@media(max-width:520px){.programme-section{padding:4px 14px 28px}.event-content{padding:13px}.event h4{font-size:14px}}
 </style>
 </head>
 <body>
@@ -54,27 +68,6 @@
  <section>
   <div id="paymentNotice" class="checkout-message info" role="status" aria-live="polite" hidden></div>
   <div class="section-head"><div><h3>Choose your events</h3><p>Tap any session to explore what you will practise, the learning outcomes and the proposed facilitator profile before adding it to your cart.</p></div></div>
-  <section class="programme-panel" aria-labelledby="programmeTitle">
-   <div class="programme-head"><div><span class="programme-kicker">THE CONFERENCE FLOW</span><h3 id="programmeTitle">Daily programme</h3><p>A clear view of the day, from the opening session to the final wrap-up.</p></div><div class="programme-hours"><span class="live-dot"></span> <span>9:00 AM – 5:00 PM</span></div></div>
-   <div class="programme-tabs" role="group" aria-label="Choose programme day">
-    <button type="button" class="programme-tab active" data-programme-day="Day 1"><span class="programme-tab-index">01</span><span><b>Day One</b><small>3 January · 2027</small></span><span class="programme-tab-arrow">↗</span></button>
-    <button type="button" class="programme-tab" data-programme-day="Day 2"><span class="programme-tab-index">02</span><span><b>Day Two</b><small>4 January · 2027</small></span><span class="programme-tab-arrow">↗</span></button>
-    <button type="button" class="programme-tab" data-programme-day="Day 3"><span class="programme-tab-index">03</span><span><b>Day Three</b><small>5 January · 2027</small></span><span class="programme-tab-arrow">↗</span></button>
-   </div>
-   <div class="programme-dayline"><span class="programme-dayline-label">SELECTED DAY</span><strong id="programmeDayTitle">Day One · Sunday, 3 January</strong><span class="programme-dayline-note">Illustrative schedule · subject to confirmation</span></div>
-   <div class="programme-timeline" aria-label="Daily timetable">
-    <div class="programme-item"><span class="programme-time">09:00<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">OPENING BLOCK</span><strong>Session 01 · Clinical skills &amp; academic activities</strong><small>9:00–10:15 AM · Parallel activities may run together</small></div><span class="programme-duration">75 min</span></div>
-    <div class="programme-item programme-break"><span class="programme-time">10:15<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">REFRESH</span><strong>Morning tea break</strong><small>10:15–10:30 AM · Recharge and connect</small></div><span class="programme-duration">15 min</span></div>
-    <div class="programme-item"><span class="programme-time">10:30<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">LEARNING BLOCK</span><strong>Session 02 · Workshops &amp; competitions</strong><small>10:30–11:45 AM · Choose from parallel events</small></div><span class="programme-duration">75 min</span></div>
-    <div class="programme-item programme-break"><span class="programme-time">11:45<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">TRANSITION</span><strong>Transition break</strong><small>11:45 AM–12:00 PM · Move between venues</small></div><span class="programme-duration">15 min</span></div>
-    <div class="programme-item"><span class="programme-time">12:00<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">MIDDAY BLOCK</span><strong>Session 03 · Case discussions &amp; presentations</strong><small>12:00–1:00 PM · Parallel activities may run together</small></div><span class="programme-duration">60 min</span></div>
-    <div class="programme-item programme-lunch"><span class="programme-time">01:00<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">PAUSE &amp; REFUEL</span><strong>Lunch break</strong><small>1:00–2:00 PM · Lunch and networking</small></div><span class="programme-duration">60 min</span></div>
-    <div class="programme-item"><span class="programme-time">02:00<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">AFTERNOON BLOCK</span><strong>Session 04 · Hands-on learning &amp; challenges</strong><small>2:00–3:30 PM · Parallel activities may run together</small></div><span class="programme-duration">90 min</span></div>
-    <div class="programme-item programme-break"><span class="programme-time">03:30<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">REFRESH</span><strong>Afternoon tea break</strong><small>3:30–3:45 PM · Take a short breather</small></div><span class="programme-duration">15 min</span></div>
-    <div class="programme-item"><span class="programme-time">03:45<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">FINAL BLOCK</span><strong>Session 05 · Finals, showcase &amp; wrap-up</strong><small>3:45–5:00 PM · Final session of the day</small></div><span class="programme-duration">75 min</span></div>
-   </div>
-   <p class="programme-footnote"><span class="programme-footnote-mark">i</span><span><strong>Planning note</strong> This is a proposed daily framework, not a confirmed event-by-event allocation. Individual activities, venues and timings require organizer approval.</span></p>
-  </section>
   <div class="filterbar" id="filters">
    <button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Day 1">Day 1</button><button class="filter" data-filter="Day 2">Day 2</button><button class="filter" data-filter="Day 3">Day 3</button><button class="filter" data-filter="Competition">Competitions</button><button class="filter" data-filter="Workshop">Workshops</button>
   </div>
@@ -113,6 +106,32 @@
   </div>
  </aside>
 </main>
+
+<section class="programme-section" id="programme" aria-labelledby="programmeTitle">
+ <div class="programme-wrap">
+  <section class="programme-panel" aria-labelledby="programmeTitle">
+   <div class="programme-head"><div><span class="programme-kicker">THE CONFERENCE FLOW</span><h3 id="programmeTitle">Daily programme</h3><p>Explore the proposed daily schedule separately from event selection.</p></div><div class="programme-hours"><span class="live-dot"></span> <span>9:00 AM – 5:00 PM</span></div></div>
+   <div class="programme-tabs" role="group" aria-label="Choose programme day">
+    <button type="button" class="programme-tab active" data-programme-day="Day 1"><span class="programme-tab-index">01</span><span><b>Day One</b><small>3 January · 2027</small></span><span class="programme-tab-arrow">↗</span></button>
+    <button type="button" class="programme-tab" data-programme-day="Day 2"><span class="programme-tab-index">02</span><span><b>Day Two</b><small>4 January · 2027</small></span><span class="programme-tab-arrow">↗</span></button>
+    <button type="button" class="programme-tab" data-programme-day="Day 3"><span class="programme-tab-index">03</span><span><b>Day Three</b><small>5 January · 2027</small></span><span class="programme-tab-arrow">↗</span></button>
+   </div>
+   <div class="programme-dayline"><span class="programme-dayline-label">SELECTED DAY</span><strong id="programmeDayTitle">Day One · Sunday, 3 January</strong><span class="programme-dayline-note">Illustrative schedule · subject to confirmation</span></div>
+   <div class="programme-timeline" aria-label="Daily timetable">
+    <div class="programme-item"><span class="programme-time">09:00<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">OPENING BLOCK</span><strong>Session 01 · Clinical skills &amp; academic activities</strong><small>9:00–10:15 AM · Parallel activities may run together</small></div><span class="programme-duration">75 min</span></div>
+    <div class="programme-item programme-break"><span class="programme-time">10:15<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">REFRESH</span><strong>Morning tea break</strong><small>10:15–10:30 AM · Recharge and connect</small></div><span class="programme-duration">15 min</span></div>
+    <div class="programme-item"><span class="programme-time">10:30<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">LEARNING BLOCK</span><strong>Session 02 · Workshops &amp; competitions</strong><small>10:30–11:45 AM · Choose from parallel events</small></div><span class="programme-duration">75 min</span></div>
+    <div class="programme-item programme-break"><span class="programme-time">11:45<span>AM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">TRANSITION</span><strong>Transition break</strong><small>11:45 AM–12:00 PM · Move between venues</small></div><span class="programme-duration">15 min</span></div>
+    <div class="programme-item"><span class="programme-time">12:00<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">MIDDAY BLOCK</span><strong>Session 03 · Case discussions &amp; presentations</strong><small>12:00–1:00 PM · Parallel activities may run together</small></div><span class="programme-duration">60 min</span></div>
+    <div class="programme-item programme-lunch"><span class="programme-time">01:00<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">PAUSE &amp; REFUEL</span><strong>Lunch break</strong><small>1:00–2:00 PM · Lunch and networking</small></div><span class="programme-duration">60 min</span></div>
+    <div class="programme-item"><span class="programme-time">02:00<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">AFTERNOON BLOCK</span><strong>Session 04 · Hands-on learning &amp; challenges</strong><small>2:00–3:30 PM · Parallel activities may run together</small></div><span class="programme-duration">90 min</span></div>
+    <div class="programme-item programme-break"><span class="programme-time">03:30<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">REFRESH</span><strong>Afternoon tea break</strong><small>3:30–3:45 PM · Take a short breather</small></div><span class="programme-duration">15 min</span></div>
+    <div class="programme-item"><span class="programme-time">03:45<span>PM</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">FINAL BLOCK</span><strong>Session 05 · Finals, showcase &amp; wrap-up</strong><small>3:45–5:00 PM · Final session of the day</small></div><span class="programme-duration">75 min</span></div>
+   </div>
+   <p class="programme-footnote"><span class="programme-footnote-mark">i</span><span><strong>Planning note</strong> This is a proposed daily framework, not a confirmed event-by-event allocation. Individual activities, venues and timings require organizer approval.</span></p>
+  </section>
+ </div>
+</section>
 
 <section class="about" id="about" aria-labelledby="aboutTitle">
  <div class="section-head"><div><h3 id="aboutTitle">About RESMAGNA 2027 & the host institution</h3><p>Three days of learning, clinical skills and intercollegiate connection.</p></div></div>
@@ -232,7 +251,7 @@ function renderEvents() {
   const conflict=selected.has(e.id)?null:conflictFor(e),isSelected=selected.has(e.id),time=sessionTimes[e.slot];
   const conflictNote=conflict?'<div class="conflict-note">⏱ This overlaps with '+conflict.name+'. Choose a different time slot.</div>':"";
   const el=document.createElement("article");el.className="event"+(isSelected?" selected":"")+(conflict?" conflict":"");el.tabIndex=0;el.dataset.eventId=e.id;el.setAttribute("aria-label","Explore "+e.name);
-  el.innerHTML=`<div class="event-content"><div class="event-top"><span class="tag">${e.day} · ${e.type}</span><span style="font-size:17px">${e.type==="Workshop"?"🧤":e.type==="Competition"?"🏆":"📚"}</span></div><div class="event-time">◷ ${time} <small>· ${e.day}</small></div><h4>${e.name}</h4><div class="event-art-label">${eventArtLabels[e.id]}</div><div class="event-photo"><img src="${eventArt[e.id]}" alt="Topic illustration for ${eventArtLabels[e.id]}" loading="lazy" decoding="async"></div><p class="desc">${e.desc}</p><div class="event-bottom"><div class="price">${inr(e.price)} <small>/ person</small></div><button class="add ${isSelected?"remove":""}" data-id="${e.id}" ${conflict?"disabled":""}>${isSelected?"✓ Added":conflict?"Time conflict":"＋ Add to cart"}</button></div>${conflictNote}<button type="button" class="event-explore" data-detail="${e.id}">Explore learning plan & facilitator ↗</button><div class="capacity">${e.cap} · subject to final confirmation</div></div>`;
+  el.innerHTML=`<div class="event-content"><div class="event-top"><span class="tag">${e.day} · ${e.type}</span><span class="event-type-mark" aria-hidden="true"></span></div><div class="event-time">◷ ${time} <small>· ${e.day}</small></div><h4>${e.name}</h4><p class="desc">${e.desc}</p><div class="event-bottom"><div class="price">${inr(e.price)} <small>/ person</small></div><button class="add ${isSelected?"remove":""}" data-id="${e.id}" ${conflict?"disabled":""}>${isSelected?"✓ Added":conflict?"Time conflict":"＋ Add to cart"}</button></div>${conflictNote}<button type="button" class="event-explore" data-detail="${e.id}">Explore learning plan & facilitator ↗</button><div class="capacity">${e.cap} · subject to final confirmation</div></div>`;
   root.appendChild(el);
  });
  root.querySelectorAll("button[data-id]").forEach(b=>b.addEventListener("click",ev=>{ev.stopPropagation();const e=eventData.find(x=>x.id===b.dataset.id);if(selected.has(e.id))selected.delete(e.id);else if(!conflictFor(e))selected.add(e.id);renderEvents();renderCart();}));
