@@ -10,7 +10,7 @@ module.exports = async (req, res) => {
   try {
     const db = supabase();
     const { data, error } = await db.from("registrations")
-      .select("txnid,name,email,phone,college,gender,course_year,food_preference,event_ids,events,event_total,food_selected,food_amount,accommodation,accommodation_amount,amount,payment_status,payu_txn_id,payu_mode,created_at,updated_at")
+      .select("txnid,name,email,phone,college,gender,course_year,food_preference,privacy_consent,privacy_consent_at,event_ids,events,event_total,food_selected,food_amount,accommodation,accommodation_amount,amount,payment_status,payu_txn_id,payu_mode,created_at,updated_at")
       .order("created_at", { ascending: false })
       .limit(500);
     if (error) throw error;
