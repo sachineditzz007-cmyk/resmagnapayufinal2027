@@ -26,6 +26,7 @@ module.exports = async (req, res) => {
     const db = supabase();
     const { error } = await db.from("registrations").insert({
       txnid, name, email, phone, college, course_year: year, food_preference: diet,
+      attendance_token: crypto.randomBytes(24).toString("base64url"),
       events: cart.events, event_ids: body.eventIds, event_total: cart.eventTotal,
       food_selected: body.food, food_amount: cart.foodTotal,
       accommodation, accommodation_amount: cart.accommodationTotal,
