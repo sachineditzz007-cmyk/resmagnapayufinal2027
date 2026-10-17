@@ -69,6 +69,17 @@
 .category-picker-panel .filter{padding:8px 11px;font-size:10px;border-radius:999px;transition:transform .2s,box-shadow .2s,background .2s}
 .category-picker-panel .filter:hover{transform:translateY(-1px);box-shadow:0 5px 12px #19385b14}
 @media(max-width:760px){.category-picker-panel{padding:12px}.category-picker-panel .filter{flex:1 1 auto}}
+/* Critical mobile fix: the sidebar is a sibling of the event list in the main grid.
+   Reorder the whole sidebar above the event section on narrow screens. */
+@media(max-width:760px){
+ .layout{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:16px!important}
+ .layout>aside.side{order:-1!important;width:100%!important;display:flex!important;flex-direction:column!important}
+ .layout>section{order:1!important;width:100%!important;min-width:0!important}
+ .layout>aside.side>.date-picker-panel{order:0!important}
+ .layout>aside.side>.category-picker-panel{order:1!important}
+ .layout>aside.side>.panel:nth-of-type(3){order:2!important}
+ .layout>aside.side>.panel:nth-of-type(4){order:3!important}
+}
 /* Mobile ordering: keep the animated date selector at the top of the sidebar */
 @media(max-width:760px){.side{display:flex;flex-direction:column;gap:12px}.date-picker-panel{order:0!important}.category-picker-panel{order:1!important}.side>.panel:not(.date-picker-panel):not(.category-picker-panel){order:2}.side>.panel:not(.date-picker-panel):not(.category-picker-panel)~.panel{order:3}}
 
