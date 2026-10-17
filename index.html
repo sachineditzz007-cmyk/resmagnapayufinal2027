@@ -208,19 +208,21 @@ function renderEvents() {
  root.querySelectorAll("[data-detail]").forEach(b=>b.addEventListener("click",ev=>{ev.stopPropagation();openEventDetails(b.dataset.detail);}));
  root.querySelectorAll(".event").forEach(card=>{card.addEventListener("click",ev=>{if(!ev.target.closest("button"))openEventDetails(card.dataset.eventId);});card.addEventListener("keydown",ev=>{if((ev.key==="Enter"||ev.key===" ")&&ev.target===card){ev.preventDefault();openEventDetails(card.dataset.eventId);}});});
 }
+let lastEventTrigger=null;
 function openEventDetails(id){
  const e=eventData.find(x=>x.id===id),d=eventDetails[id];if(!e||!d)return;
  document.getElementById("detailImage").src=eventImages[id];document.getElementById("detailImage").alt="Illustrative image for "+e.name;document.getElementById("detailTitle").textContent=e.name;
  document.getElementById("detailMeta").innerHTML=[e.day,e.type,sessionTimes[e.slot],inr(e.price)+" per person",d.format].map(v=>'<span class="detail-chip">'+v+'</span>').join("");
  document.getElementById("detailIntro").textContent=e.desc;document.getElementById("detailOutcomes").innerHTML=d.outcomes.map(x=>'<li>'+x+'</li>').join("");document.getElementById("detailFacilitator").textContent=d.lead;document.getElementById("detailTakeaway").textContent=d.takeaway;
  const add=document.getElementById("detailAdd");add.dataset.id=id;add.textContent=selected.has(id)?"✓ Already in your cart":"＋ Add this event";add.disabled=!!(!selected.has(id)&&conflictFor(e));add.style.opacity=add.disabled?".55":"1";
+ lastEventTrigger=document.activeElement;
  const backdrop=document.getElementById("eventDetailBackdrop");backdrop.classList.add("show");backdrop.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";document.getElementById("detailClose").focus();
 }
-function closeEventDetails(){const b=document.getElementById("eventDetailBackdrop");b.classList.remove("show");b.setAttribute("aria-hidden","true");document.body.style.overflow="";}
+function closeEventDetails(){const b=document.getElementById("eventDetailBackdrop");b.classList.remove("show");b.setAttribute("aria-hidden","true");document.body.style.overflow="";if(lastEventTrigger&&typeof lastEventTrigger.focus==="function")lastEventTrigger.focus();}
 document.getElementById("detailClose").addEventListener("click",closeEventDetails);
 document.getElementById("eventDetailBackdrop").addEventListener("click",e=>{if(e.target.id==="eventDetailBackdrop")closeEventDetails();});
 document.getElementById("detailAdd").addEventListener("click",e=>{const id=e.currentTarget.dataset.id,event=eventData.find(x=>x.id===id);if(!event)return;if(selected.has(id)){closeEventDetails();return;}if(conflictFor(event)){document.getElementById("detailFacilitator").textContent="This session overlaps with another event in your cart. Remove the conflicting event first.";return;}selected.add(id);renderEvents();renderCart();closeEventDetails();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")closeEventDetails();});
+document.addEventListener("keydown",e=>{const backdrop=document.getElementById("eventDetailBackdrop");if(!backdrop.classList.contains("show"))return;if(e.key==="Escape"){closeEventDetails();return;}if(e.key==="Tab"){const first=document.getElementById("detailClose"),last=document.getElementById("detailAdd");if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
 function totals() {
  const ev=eventData.filter(e=>selected.has(e.id)).reduce((a,e)=>a+e.price,0);
  const food=document.getElementById("food").checked?900:0;
