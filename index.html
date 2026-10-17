@@ -257,7 +257,7 @@
    <div class="two"><div class="field"><label for="email">EMAIL *</label><input id="email" type="email" placeholder="you@example.com" autocomplete="email" required aria-required="true"></div><div class="field"><label for="phone">MOBILE *</label><input id="phone" type="tel" placeholder="10-digit number" autocomplete="tel" inputmode="tel" required aria-required="true"></div></div>
    <div class="field"><label for="collegeSearch">COLLEGE / INSTITUTION *</label><div class="college-picker"><input id="collegeSearch" type="text" required aria-required="true" aria-label="College or institution" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="collegeDropdown" autocomplete="off" placeholder="Search college name (A–Z)"><input id="college" type="hidden"><div id="collegeDropdown" class="college-dropdown" role="listbox" hidden></div></div><div class="smallnote">78 MBBS institutions in the current directory, alphabetized by name. Management labels include government, private/trust, deemed and central. “Aided” or “autonomous” status may overlap with an institution’s management type; use “Not listed” if your institution is missing.</div></div>
    <div class="two choice-row">
- <div class="field choice-field"><label for="year">COURSE / YEAR <span class="optional-tag">STUDY LEVEL</span></label><div class="choice-shell"><span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m2.5 9 9.5-5 9.5 5-9.5 5-9.5-5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6.5 11.2v4.1c3.3 2.4 7.7 2.4 11 0v-4.1M21.5 9v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><select id="year" aria-label="Course and year"><option>MBBS - 1st year</option><option>MBBS - 2nd year</option><option>MBBS - 3rd year</option><option>MBBS - Final year</option><option>MBBS - Final year (2022 batch)</option><option>MBBS - Final year (2023 batch)</option><option>Intern</option><option>Postgraduate</option><option>Other</option></select><span class="choice-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="choice-hint">Choose your current stage of training</div></div>
+ <div class="field choice-field"><label for="year">COURSE / YEAR <span class="optional-tag">STUDY LEVEL</span></label><div class="choice-shell"><span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m2.5 9 9.5-5 9.5 5-9.5 5-9.5-5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6.5 11.2v4.1c3.3 2.4 7.7 2.4 11 0v-4.1M21.5 9v6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span><select id="year" aria-label="Course and year"><option>MBBS - 1st year</option><option>MBBS - 2nd year</option><option>MBBS - 3rd year</option><option>MBBS - Final year (2022 batch)</option><option>MBBS - Final year (2023 batch)</option><option>Intern</option><option>Postgraduate</option><option>Other</option></select><span class="choice-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="choice-hint">Choose your current stage of training</div></div>
  <div class="field choice-field"><label for="gender">GENDER <span class="required-tag">REQUIRED</span></label><div class="choice-shell"><span class="choice-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20c.7-3.7 3.2-5.5 7.5-5.5s6.8 1.8 7.5 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span><select id="gender" required aria-label="Gender"><option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option></select><span class="choice-chevron" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none"><path d="m5 7.5 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div><div class="choice-hint">Select one option to continue</div></div>
 </div><div class="field"><label for="diet">FOOD PREFERENCE</label><select id="diet"><option>Vegetarian</option><option>Non-vegetarian</option><option>Vegan</option></select></div>
   </div>
@@ -756,5 +756,45 @@ renderEvents();renderCart();
 .date-picker-panel #filters .filter.active{background:linear-gradient(120deg,#c9f5e9,#d7e7ff)!important;border-color:#78b9b1!important;color:#164c59!important}
 </style>
 
-</body>
+
+<style>
+/* Food pass and accommodation selection micro-interactions */
+#registration .addon{
+ position:relative;
+ cursor:pointer;
+ border:1px solid #dce5f0;
+ background:linear-gradient(135deg,#fff 0%,#f9fbff 100%);
+ box-shadow:0 2px 7px #10233f08;
+ transform:translateY(0) scale(1);
+ transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease,background .2s ease;
+ -webkit-tap-highlight-color:transparent;
+}
+#registration .addon:hover{
+ transform:translateY(-3px);
+ border-color:#9bb9f0;
+ box-shadow:0 10px 22px #2458bc17;
+ background:linear-gradient(135deg,#fff 0%,#f0f6ff 100%);
+}
+#registration .addon:active{transform:translateY(-1px) scale(.99)}
+#registration .addon:focus-within{
+ outline:3px solid #dbe8ff;
+ outline-offset:2px;
+ border-color:#6c91ed;
+}
+#registration .addon:has(input:checked){
+ border-color:#4382e8;
+ background:linear-gradient(120deg,#edf5ff 0%,#e8faf5 100%);
+ box-shadow:0 0 0 2px #dbe8ff,0 8px 18px #2458bc12;
+}
+#registration .addon input{cursor:pointer;width:17px;height:17px;flex:0 0 auto}
+#registration .addon strong{transition:color .18s ease}
+#registration .addon:has(input:checked) strong{color:#174caa}
+#registration .addon em{transition:transform .2s ease,color .2s ease}
+#registration .addon:hover em{transform:scale(1.05);color:#174caa}
+@media(prefers-reduced-motion:reduce){
+ #registration .addon,#registration .addon strong,#registration .addon em{transition:none!important}
+ #registration .addon:hover,#registration .addon:active{transform:none!important}
+}
+</style>
+\n</body>
 </html>
