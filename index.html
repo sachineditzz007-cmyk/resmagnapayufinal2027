@@ -69,6 +69,9 @@
 .category-picker-panel .filter{padding:8px 11px;font-size:10px;border-radius:999px;transition:transform .2s,box-shadow .2s,background .2s}
 .category-picker-panel .filter:hover{transform:translateY(-1px);box-shadow:0 5px 12px #19385b14}
 @media(max-width:760px){.category-picker-panel{padding:12px}.category-picker-panel .filter{flex:1 1 auto}}
+/* Mobile ordering: keep the animated date selector at the top of the sidebar */
+@media(max-width:760px){.side{display:flex;flex-direction:column;gap:12px}.date-picker-panel{order:0!important}.category-picker-panel{order:1!important}.side>.panel:not(.date-picker-panel):not(.category-picker-panel){order:2}.side>.panel:not(.date-picker-panel):not(.category-picker-panel)~.panel{order:3}}
+
 
 /* Liquid-glass conference countdown and date selector */
 .event-launch{margin-top:18px;padding:15px;border:1px solid #ffffffa8;border-radius:22px;background:linear-gradient(145deg,#ffffffb8,#e8f2ff9c 55%,#d8fbf330);box-shadow:0 18px 45px #17365d16,inset 0 1px 0 #fff;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);overflow:hidden;position:relative}
