@@ -153,6 +153,32 @@
  #registration .side>.panel:has(#food),#registration .side>.panel:has(#accommodation){order:9!important;width:100%!important}
  #registration .side>.panel:has(#total),#registration .side>.panel:has(#checkout){order:11!important;width:100%!important}
 }
+
+/* RESMAGNA 2027: requested full-page registration flow, consistent on desktop and mobile */
+.hero{grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important}
+.hero-card{width:100%;max-width:none}
+.event-launch{margin-top:18px}
+#registration.layout{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:16px!important}
+#registration.layout>section,#registration.layout>aside{display:contents!important}
+#registration .date-picker-panel{order:1!important;width:100%!important;position:relative!important;top:auto!important}
+#registration .section-head{order:2!important;width:100%!important;margin-top:8px!important}
+#registration .event-grid{order:3!important;width:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))}
+#registration> .smallnote,#registration .smallnote{order:4}
+#registration .side>.panel:has(#cartList){order:5!important;width:100%!important}
+#registration .side>.panel:has(#name){order:6!important;width:100%!important}
+#registration .side>.panel:has(#food){order:7!important;width:100%!important}
+#registration #paymentNotice{order:0!important;width:100%!important}
+#registration .side{display:contents!important}
+#registration .side>.panel{position:relative!important;top:auto!important}
+@media(max-width:760px){
+ #registration .event-grid{grid-template-columns:minmax(0,1fr)!important}
+ #registration .section-head{margin:4px 0 8px!important}
+ #registration .date-picker-panel{order:1!important}
+ #registration .side>.panel:has(#cartList){order:5!important}
+ #registration .side>.panel:has(#name){order:6!important}
+ #registration .side>.panel:has(#food){order:7!important}
+}
+
 </style>
 </head>
 <body>
