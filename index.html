@@ -294,19 +294,23 @@ const eventArtLabels={"E01":"ECG rhythm reading","E02":"Suturing & knot practice
 
 /* Lightweight topic-matched illustrations for cart thumbnails. */
 function eventThumbnail(event){
- const n=String(event.name||"").toLowerCase();let glyph="✚",c1="#d9f6f1",c2="#dbeafe",ink="#146c78";
- if(/ecg|cardio|heart/.test(n)){glyph="♡";c1="#ffe4e6";c2="#fee2e2";ink="#be123c";}
- else if(/sutur|knot|surg/.test(n)){glyph="✂";c1="#d1fae5";c2="#ccfbf1";ink="#047857";}
- else if(/life support|bls|airway|cpr/.test(n)){glyph="✚";c1="#dbeafe";c2="#cffafe";ink="#0369a1";}
- else if(/abg|acid|blood|haemat|hemat|anaemia|anemia/.test(n)){glyph="◉";c1="#fee2e2";c2="#ffedd5";ink="#b91c1c";}
- else if(/x-ray|imaging|ultrasound|radiolog|scan/.test(n)){glyph="◉";c1="#e0e7ff";c2="#dbeafe";ink="#4338ca";}
- else if(/quiz|competition|challenge|rapid|debate/.test(n)){glyph="✦";c1="#fef3c7";c2="#ffedd5";ink="#b45309";}
- else if(/brain|neuro|psych/.test(n)){glyph="❋";c1="#ede9fe";c2="#dbeafe";ink="#6d28d9";}
- else if(/eye|ophthal|vision/.test(n)){glyph="◎";c1="#cffafe";c2="#dbeafe";ink="#0e7490";}
- else if(/skin|derma/.test(n)){glyph="✧";c1="#fce7f3";c2="#f3e8ff";ink="#a21caf";}
- else if(/thyroid|endocrin/.test(n)){glyph="◈";c1="#d1fae5";c2="#e0e7ff";ink="#0f766e";}
- else if(/case|presentation|academic/.test(n)){glyph="▤";c1="#dbeafe";c2="#e0f2fe";ink="#1d4ed8";}
- const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 82"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+c1+'"/><stop offset="1" stop-color="'+c2+'"/></linearGradient><radialGradient id="gl"><stop stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="120" height="82" rx="12" fill="url(#g)"/><circle cx="92" cy="12" r="40" fill="url(#gl)"/><circle cx="60" cy="41" r="25" fill="#fff" fill-opacity=".62" stroke="#fff" stroke-opacity=".85"/><text x="60" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="31" font-weight="700" fill="'+ink+'">'+glyph+'</text><path d="M10 70 Q36 61 57 71 T110 68" fill="none" stroke="'+ink+'" stroke-opacity=".22" stroke-width="1.5" stroke-linecap="round"/><circle cx="15" cy="15" r="2" fill="'+ink+'" fill-opacity=".3"/><circle cx="105" cy="57" r="2" fill="'+ink+'" fill-opacity=".35"/></svg>';
+ const n=String(event.name||"").toLowerCase();
+ let c1="#d9f6f1",c2="#dbeafe",ink="#146c78",drawing="";
+ const line='fill="none" stroke="'+ink+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+ if(/ecg|cardio|heart/.test(n)){c1="#ffe4e6";c2="#fff1f2";ink="#be123c";drawing='<path '+line+' d="M25 43h18l8-17 12 34 10-22h22"/><path '+line+' d="M60 18c-12-15-34 2-23 18l23 25 23-25c11-16-11-33-23-18z" opacity=".45"/>';}
+ else if(/sutur|knot|surg/.test(n)){c1="#d1fae5";c2="#ecfdf5";ink="#047857";drawing='<path '+line+' d="M35 20l24 24m0-24L35 44m24 0l24 18M59 44l24-18"/><circle cx="59" cy="44" r="7" fill="#fff" stroke="'+ink+'" stroke-width="3"/><path '+line+' d="M30 16l10 10m39 32l10 10"/>';}
+ else if(/life support|bls|airway|cpr/.test(n)){c1="#dbeafe";c2="#cffafe";ink="#0369a1";drawing='<rect x="34" y="17" width="52" height="48" rx="10" fill="#fff" fill-opacity=".7" stroke="'+ink+'" stroke-width="2.5"/><path d="M60 26v30M45 41h30" stroke="'+ink+'" stroke-width="7" stroke-linecap="round"/>';}
+ else if(/abg|acid|blood|haemat|hemat|anaemia|anemia/.test(n)){c1="#fee2e2";c2="#ffedd5";ink="#b91c1c";drawing='<path d="M60 15C53 29 37 43 37 52a23 23 0 0 0 46 0c0-9-16-23-23-37z" fill="#fff" fill-opacity=".75" stroke="'+ink+'" stroke-width="3"/><path '+line+' d="M48 53q12 10 24 0"/>';}
+ else if(/x-ray|imaging|ultrasound|radiolog|scan/.test(n)){c1="#e0e7ff";c2="#dbeafe";ink="#4338ca";drawing='<rect x="31" y="15" width="58" height="53" rx="7" fill="#fff" fill-opacity=".7" stroke="'+ink+'" stroke-width="2.5"/><path '+line+' d="M60 24v34M45 29l15 12 15-12M45 53l15-12 15 12"/>';}
+ else if(/quiz|competition|challenge|rapid|debate/.test(n)){c1="#fef3c7";c2="#ffedd5";ink="#b45309";drawing='<path d="M60 15l8 17 19 3-14 13 4 19-17-9-17 9 4-19-14-13 19-3z" fill="#fff" fill-opacity=".8" stroke="'+ink+'" stroke-width="2.5" stroke-linejoin="round"/>';}
+ else if(/brain|neuro|psych/.test(n)){c1="#ede9fe";c2="#dbeafe";ink="#6d28d9";drawing='<path d="M58 23c-10-12-24-2-20 9-11 5-7 20 2 21-2 12 12 17 19 8m3-38c10-12 24-2 20 9 11 5 7 20-2 21 2 12-12 17-19 8M60 22v43M43 36l13 6m21-6l-13 6M44 52l12-3m20 3l-12-3" fill="#fff" fill-opacity=".7" stroke="'+ink+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';}
+ else if(/eye|ophthal|vision/.test(n)){c1="#cffafe";c2="#dbeafe";ink="#0e7490";drawing='<path d="M23 42q37-38 74 0-37 38-74 0z" fill="#fff" fill-opacity=".8" stroke="'+ink+'" stroke-width="3"/><circle cx="60" cy="42" r="13" fill="'+ink+'" fill-opacity=".8"/><circle cx="60" cy="42" r="5" fill="#fff"/>';}
+ else if(/skin|derma/.test(n)){c1="#fce7f3";c2="#f3e8ff";ink="#a21caf";drawing='<rect x="27" y="25" width="66" height="36" rx="9" fill="#fff" fill-opacity=".65" stroke="'+ink+'" stroke-width="2.5"/><path '+line+' d="M31 37h58M31 49h58"/><circle cx="46" cy="43" r="3" fill="'+ink+'"/><circle cx="70" cy="55" r="3" fill="'+ink+'"/>';}
+ else if(/thyroid|endocrin/.test(n)){c1="#d1fae5";c2="#e0e7ff";ink="#0f766e";drawing='<path d="M57 23c-8-12-25-8-24 8 1 12 10 24 22 17l5-8 5 8c12 7 21-5 22-17 1-16-16-20-24-8l-3 7z" fill="#fff" fill-opacity=".8" stroke="'+ink+'" stroke-width="2.5"/><path '+line+' d="M60 25v38"/>';}
+ else if(/airway|respirat|pulmon|lung/.test(n)){c1="#dbeafe";c2="#cffafe";ink="#0369a1";drawing='<path '+line+' d="M60 17v22m0-10l-13 9m13-9l13 9"/><path d="M46 32c-10 5-19 22-15 32 4 8 16 5 23-3V39m14 0v22c7 8 19 11 23 3 4-10-5-27-15-32" fill="#fff" fill-opacity=".75" stroke="'+ink+'" stroke-width="2.5"/>';}
+ else if(/ultrasound|obstetric|foetal|fetal|pregnan|gyn|obstet/.test(n)){c1="#fce7f3";c2="#dbeafe";ink="#9d174d";drawing='<rect x="34" y="16" width="52" height="52" rx="7" fill="#fff" fill-opacity=".75" stroke="'+ink+'" stroke-width="2.5"/><circle cx="59" cy="38" r="13" fill="none" stroke="'+ink+'" stroke-width="2.5"/><path '+line+' d="M49 49q10 10 20 0m-10-23v24"/>';}
+ else {c1="#d9f6f1";c2="#dbeafe";ink="#146c78";drawing='<rect x="34" y="17" width="52" height="48" rx="9" fill="#fff" fill-opacity=".7" stroke="'+ink+'" stroke-width="2.5"/><path d="M60 27v28M46 41h28" stroke="'+ink+'" stroke-width="6" stroke-linecap="round"/>';}
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 82"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+c1+'"/><stop offset="1" stop-color="'+c2+'"/></linearGradient><radialGradient id="gl"><stop stop-color="#fff" stop-opacity=".85"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="120" height="82" rx="12" fill="url(#g)"/><circle cx="96" cy="10" r="38" fill="url(#gl)"/>'+drawing+'<path d="M10 73 Q34 65 58 73 T110 70" fill="none" stroke="'+ink+'" stroke-opacity=".22" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="14" r="2" fill="'+ink+'" fill-opacity=".3"/></svg>';
  return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(svg);
 }
 
