@@ -177,29 +177,42 @@
  .date-picker-panel{padding:13px!important}
 }
 
-/* RESMAGNA 2027: requested full-page registration flow, consistent on desktop and mobile */
-.hero{grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important}
-.hero-card{width:100%;max-width:none}
-.event-launch{margin-top:18px}
-#registration.layout{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:16px!important}
-#registration.layout>section,#registration.layout>aside{display:contents!important}
-#registration .date-picker-panel{order:1!important;width:100%!important;position:relative!important;top:auto!important}
-#registration .section-head{order:2!important;width:100%!important;margin-top:8px!important}
-#registration .event-grid{order:3!important;width:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))}
-#registration> .smallnote,#registration .smallnote{order:4}
-#registration .side>.panel:has(#cartList){order:5!important;width:100%!important}
-#registration .side>.panel:has(#name){order:6!important;width:100%!important}
-#registration .side>.panel:has(#food){order:7!important;width:100%!important}
-#registration #paymentNotice{order:0!important;width:100%!important}
-#registration .side{display:contents!important}
-#registration .side>.panel{position:relative!important;top:auto!important}
-@media(max-width:760px){
+/* RESMAGNA responsive layout: desktop keeps the polished two-column registration; mobile follows the requested top-to-bottom flow */
+.hero{display:grid!important;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr)!important;align-items:stretch!important;gap:24px!important}
+.hero-card{display:block!important;visibility:visible!important;width:100%!important;max-width:none!important;min-width:0!important}
+.hero-card .event-launch,.hero-card .countdown-glass{visibility:visible!important;opacity:1!important}
+#registration.layout{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(300px,360px)!important;align-items:start!important;gap:22px!important}
+#registration.layout>section{display:block!important;min-width:0!important}
+#registration.layout>aside.side{display:flex!important;flex-direction:column!important;gap:14px!important;position:sticky!important;top:18px!important;min-width:0!important}
+#registration .date-picker-panel{display:block!important;position:relative!important;top:auto!important;width:100%!important;order:0!important;margin-bottom:0!important}
+#registration .side>.panel{position:relative!important;top:auto!important;width:100%!important}
+#registration .side>.panel:has(#cartList){order:1!important}
+#registration .side>.panel:has(#name){order:2!important}
+#registration .side>.panel:has(#food){order:3!important}
+#registration #paymentNotice{grid-column:1/-1!important}
+#registration .section-head,#registration .event-grid,#registration .smallnote{width:100%!important;min-width:0!important}
+#registration .event-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+@media(max-width:850px){
+ .hero{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important}
+ .hero-card{display:block!important;visibility:visible!important;width:100%!important;max-width:none!important;min-width:0!important}
+ #registration.layout{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:14px!important}
+ #registration.layout>section,#registration.layout>aside.side,#registration .side{display:contents!important}
+ #registration #paymentNotice{order:0!important;width:100%!important}
+ #registration .date-picker-panel{display:block!important;visibility:visible!important;opacity:1!important;order:1!important;width:100%!important;min-width:0!important;position:relative!important;top:auto!important}
+ #registration .section-head{order:2!important;margin:4px 0 8px!important}
+ #registration .event-grid{order:3!important;width:100%!important;grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #registration .smallnote{order:4!important}
+ #registration .side>.panel:has(#cartList){order:5!important;width:100%!important}
+ #registration .side>.panel:has(#name){order:6!important;width:100%!important}
+ #registration .side>.panel:has(#food){order:7!important;width:100%!important}
+}
+@media(max-width:520px){
+ .hero-card{padding:16px!important}
+ .countdown-glass{grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr!important;padding:12px 5px!important;gap:0!important}
+ .countdown-glass strong{font-size:clamp(18px,6vw,25px)!important}
+ .countdown-glass small{font-size:7px!important;letter-spacing:.1em!important}
  #registration .event-grid{grid-template-columns:minmax(0,1fr)!important}
- #registration .section-head{margin:4px 0 8px!important}
- #registration .date-picker-panel{order:1!important}
- #registration .side>.panel:has(#cartList){order:5!important}
- #registration .side>.panel:has(#name){order:6!important}
- #registration .side>.panel:has(#food){order:7!important}
+ .date-picker-panel{padding:13px!important}
 }
 
 </style>
