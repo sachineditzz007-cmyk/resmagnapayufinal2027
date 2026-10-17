@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
     if (!url || !key) throw new Error("Supabase server configuration missing");
     const db = createClient(url, key, { auth: { persistSession: false } });
     const { data: row, error } = await db.from("registrations")
-      .select("txnid,name,email,phone,college,course_year,events,amount,payment_status,attendance_checked_in_at,attendance_checked_in_by")
+      .select("txnid,name,email,phone,college,gender,course_year,events,amount,payment_status,attendance_checked_in_at,attendance_checked_in_by")
       .eq("attendance_token", token).maybeSingle();
     if (error) throw error;
     if (!row || String(row.payment_status).toLowerCase() !== "success") {
@@ -31,11 +31,11 @@ module.exports = async (req, res) => {
     const { data: updated, error: updateError } = await db.from("registrations")
       .update({ attendance_checked_in_at: new Date().toISOString(), attendance_checked_in_by: organizer })
       .eq("txnid", row.txnid).is("attendance_checked_in_at", null)
-      .select("txnid,name,email,phone,college,course_year,events,amount,payment_status,attendance_checked_in_at,attendance_checked_in_by").maybeSingle();
+      .select("txnid,name,email,phone,college,gender,course_year,events,amount,payment_status,attendance_checked_in_at,attendance_checked_in_by").maybeSingle();
     if (updateError) throw updateError;
     if (!updated) {
       const { data: latest } = await db.from("registrations")
-        .select("txnid,name,email,phone,college,course_year,events,amount,payment_status,attendance_checked_in_at,attendance_checked_in_by")
+        .select("txnid,name,email,phone,college,gender,course_year,events,amount,payment_status,attendance_checked_in_at,attendance_checked_in_by")
         .eq("txnid", row.txnid).single();
       return res.status(409).json({ error: "ALREADY CHECKED IN", alreadyCheckedIn: true, registration: latest || row });
     }
