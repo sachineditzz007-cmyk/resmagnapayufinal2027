@@ -154,6 +154,29 @@
  #registration .side>.panel:has(#total),#registration .side>.panel:has(#checkout){order:11!important;width:100%!important}
 }
 
+
+/* Mobile visibility fix: keep countdown and date/day selectors visible */
+@media(max-width:850px){
+ .hero{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:16px!important}
+ .hero-card{display:block!important;visibility:visible!important;width:100%!important;max-width:none!important;min-width:0!important}
+ .hero-card .event-launch,.hero-card .countdown-glass{display:grid!important;visibility:visible!important;opacity:1!important}
+ #registration.layout{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+ #registration.layout>section,#registration.layout>aside,#registration .side{display:contents!important}
+ #registration .date-picker-panel{display:block!important;visibility:visible!important;opacity:1!important;order:1!important;width:100%!important;min-width:0!important;position:relative!important;top:auto!important}
+ #registration .section-head{order:2!important}
+ #registration .event-grid{order:3!important}
+ #registration .side>.panel:has(#cartList){order:5!important}
+ #registration .side>.panel:has(#name){order:6!important}
+ #registration .side>.panel:has(#food){order:7!important}
+}
+@media(max-width:520px){
+ .hero-card{padding:16px!important}
+ .countdown-glass{grid-template-columns:1fr 1px 1fr 1px 1fr 1px 1fr!important;padding:12px 5px!important;gap:0!important}
+ .countdown-glass strong{font-size:clamp(18px,6vw,25px)!important}
+ .countdown-glass small{font-size:7px!important;letter-spacing:.1em!important}
+ .date-picker-panel{padding:13px!important}
+}
+
 /* RESMAGNA 2027: requested full-page registration flow, consistent on desktop and mobile */
 .hero{grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important}
 .hero-card{width:100%;max-width:none}
