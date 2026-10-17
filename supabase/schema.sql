@@ -7,6 +7,8 @@ create table if not exists public.registrations (
   phone text not null,
   college text not null,
   gender text check (gender is null or gender in ('Male', 'Female')),
+  privacy_consent boolean not null default false,
+  privacy_consent_at timestamptz,
   course_year text,
   food_preference text,
   events jsonb not null default '[]'::jsonb,
@@ -44,3 +46,7 @@ alter table public.registrations add column if not exists gender text;
 alter table public.registrations enable row level security;
 
 -- Intentionally do not create anon/authenticated policies.
+
+-- Upgrade existing registrations tables safely.
+alter table public.registrations add column if not exists privacy_consent boolean not null default false;
+alter table public.registrations add column if not exists privacy_consent_at timestamptz;
