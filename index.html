@@ -137,6 +137,22 @@
 
 /* Mobile: place event cart after all registration form panels. */
 @media(max-width:760px){#registration.layout>aside.side{display:flex!important;flex-direction:column!important}#registration .date-picker-panel{order:0!important}#registration .side>.panel{order:1!important}#registration .side>.panel:has(#cartList){order:99!important}}
+
+/* Mobile order fix: keep header/details first, then day selector + activity filters, event chooser, participant options and checkout. Cart intentionally follows participant and food/accommodation details. */
+@media(max-width:760px){
+ #registration.layout{display:flex!important;flex-direction:column!important;gap:14px!important}
+ #registration.layout>section{display:contents!important}
+ #registration.layout>aside.side{display:contents!important}
+ #registration #paymentNotice{order:1!important}
+ #registration .date-picker-panel{order:3!important;display:block!important;width:100%!important}
+ #registration .section-head{order:5!important}
+ #registration .event-grid{order:6!important;width:100%!important;min-width:0!important}
+ #registration .smallnote{order:7!important}
+ #registration .side>.panel:has(#cartList){order:10!important;width:100%!important}
+ #registration .side>.panel:not(:has(#cartList)){order:8!important;width:100%!important}
+ #registration .side>.panel:has(#food),#registration .side>.panel:has(#accommodation){order:9!important;width:100%!important}
+ #registration .side>.panel:has(#total),#registration .side>.panel:has(#checkout){order:11!important;width:100%!important}
+}
 </style>
 </head>
 <body>
