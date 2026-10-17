@@ -122,6 +122,28 @@ const EVENTS = {
     "price": 250
   }
 };
+const EVENT_SLOTS = {
+  "E01": "A",
+  "E02": "B",
+  "E03": "D",
+  "E04": "E",
+  "E05": "A",
+  "E06": "C",
+  "E07": "B",
+  "E08": "A",
+  "E09": "A",
+  "E10": "B",
+  "E11": "B",
+  "E12": "C",
+  "E13": "C",
+  "E14": "D",
+  "E15": "D",
+  "E16": "A",
+  "E17": "B",
+  "E18": "A",
+  "E19": "C",
+  "E20": "D"
+};
 const ADDONS = { food: 900, shared: 1500, private: 2800, none: 0 };
 function env(name) { const value = process.env[name]; if (!value) throw new Error(`Missing environment variable: ${name}`); return value; }
 function supabase() { return createClient(env("SUPABASE_URL"), env("SUPABASE_SERVICE_ROLE_KEY"), { auth: { persistSession: false } }); }
@@ -135,6 +157,15 @@ function calculate(eventIds, food, accommodation) {
   if (typeof food !== "boolean") throw new Error("Invalid food selection.");
   if (!Object.prototype.hasOwnProperty.call(ADDONS, accommodation)) throw new Error("Invalid accommodation selection.");
   const events = unique.map(id => ({ id, ...EVENTS[id] }));
+  const occupiedSlots = new Set();
+  for (const event of events) {
+    const slotKey = `${event.day}|${EVENT_SLOTS[event.id]}`;
+    if (occupiedSlots.has(slotKey)) {
+      const conflicting = events.find(other => other.id !== event.id && other.day === event.day && EVENT_SLOTS[other.id] === EVENT_SLOTS[event.id]);
+      throw new Error(`Event time conflict: ${event.name} overlaps with ${conflicting ? conflicting.name : "another selected event"}. Please choose only one event per time slot.`);
+    }
+    occupiedSlots.add(slotKey);
+  }
   const eventTotal = events.reduce((sum, event) => sum + event.price, 0);
   const foodTotal = food ? ADDONS.food : 0;
   const accommodationTotal = ADDONS[accommodation];
