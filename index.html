@@ -245,7 +245,7 @@
   <div class="event-grid" id="events"></div><p class="smallnote">Images are illustrative and sourced from Unsplash. Faculty names, final session plans, physical gifts and capacities will be published only after organizer confirmation.</p>
  </section>
  <aside class="side">
-  <div class="panel date-picker-panel"><div class="date-picker-heading"><span class="date-picker-icon">✦</span><div><h3>Choose the date you’re attending</h3><p>Select your conference day and explore the activities available</p></div></div><div class="date-selector-label"><span>Your conference date</span><small id="selectedDateLabel">DAY 1 · MONDAY, 4 JAN</small></div><div class="date-selector" role="group" aria-label="Select conference day"><button class="date-option active" type="button" data-conference-day="Day 1" aria-pressed="true"><span>04</span><small>JAN</small><em>DAY 1</em></button><button class="date-option" type="button" data-conference-day="Day 2" aria-pressed="false"><span>05</span><small>JAN</small><em>DAY 2</em></button><button class="date-option" type="button" data-conference-day="Day 3" aria-pressed="false"><span>06</span><small>JAN</small><em>DAY 3</em></button></div><div class="date-detail" id="dateDetail"><span class="detail-orb">✦</span><span><strong>Day 1 · Monday, 4 January</strong><small>Explore workshops, clinical skills and academic competitions</small></span><span class="detail-arrow">↗</span></div><div class="category-picker-heading combined-activity-heading"><span class="category-icon">✦</span><div><h3>Explore activities</h3><p>Filter the programme by activity type</p></div></div><div class="filterbar" id="filters"><button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Workshop">Workshops</button><button class="filter" data-filter="Competition">Competitions</button></div></div>  <div class="panel">
+  <div class="panel date-picker-panel"><div class="date-picker-heading"><span class="date-picker-icon">✦</span><div><h3>Choose the date you’re attending</h3><p>Select your conference day and explore the activities available</p></div></div><div class="date-selector-label"><span>Your conference date</span><small id="selectedDateLabel">DAY 1 · SUNDAY, 3 JAN</small></div><div class="date-selector" role="group" aria-label="Select conference day"><button class="date-option active" type="button" data-conference-day="Day 1" aria-pressed="true"><span>03</span><small>JAN</small><em>DAY 1</em></button><button class="date-option" type="button" data-conference-day="Day 2" aria-pressed="false"><span>04</span><small>JAN</small><em>DAY 2</em></button><button class="date-option" type="button" data-conference-day="Day 3" aria-pressed="false"><span>05</span><small>JAN</small><em>DAY 3</em></button></div><div class="date-detail" id="dateDetail"><span class="detail-orb">✦</span><span><strong>Day 1 · Sunday, 3 January</strong><small>Explore workshops, clinical skills and academic competitions</small></span><span class="detail-arrow">↗</span></div><div class="category-picker-heading combined-activity-heading"><span class="category-icon">✦</span><div><h3>Explore activities</h3><p>Filter the programme by activity type</p></div></div><div class="filterbar" id="filters"><button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Workshop">Workshops</button><button class="filter" data-filter="Competition">Competitions</button></div></div>  <div class="panel">
    <div class="panel-head"><h3>🛒 Your event cart</h3><span class="count" id="count" aria-live="polite" aria-atomic="true">0 selected</span></div>
    <div id="cartList" class="cart-list"><div class="empty">Your cart is waiting for its first event. Pick an activity to begin.</div></div>
    <button class="toggle" id="toggleCart" style="display:none">Show all selected events ↓</button>
@@ -319,7 +319,7 @@
   </article>
  </div>
 </section>
-<div class="mobile-checkout" id="mobileCheckout" aria-label="Sticky checkout summary"><div class="mobile-total"><span>FINAL TOTAL</span><strong id="mobileGrandTotal" aria-live="polite" aria-atomic="true">₹0</strong></div><button id="mobilePayBtn" type="button">Continue to PayU →</button></div>
+<div class="mobile-checkout" id="mobileCheckout" aria-label="Sticky checkout summary"><div class="mobile-total"><span>FINAL TOTAL</span><strong id="mobileGrandTotal" aria-live="polite" aria-atomic="true">₹0</strong></div><button id="mobilePayBtn" type="button">Continue →</button></div>
 <div class="payment-loading" id="paymentLoading" role="dialog" aria-modal="true" aria-labelledby="loadingTitle" aria-describedby="loadingMessage"><div class="loading-card"><div class="spinner" aria-hidden="true"></div><h3 id="loadingTitle">Preparing secure checkout</h3><p id="loadingMessage">We’re validating your registration and creating your PayU payment request. Please keep this page open.</p></div></div>
 <section class="admin">
  <details>
@@ -494,7 +494,7 @@ document.getElementById("stayPlus").addEventListener("change",()=>{if(document.g
 document.getElementById("food").addEventListener("change",renderCart);
 function participant(){return {name:document.getElementById("name").value.trim(),email:document.getElementById("email").value.trim(),phone:document.getElementById("phone").value.trim(),college:document.getElementById("college").value.trim(),gender:document.getElementById("gender").value,year:document.getElementById("year").value,diet:document.getElementById("diet").value};}
 function valid(p){const box=document.getElementById("checkoutMessage");const fail=(message,target)=>{box.textContent=message;box.hidden=false;box.className="checkout-message";const el=target&&document.getElementById(target);if(el)el.focus();return false;};box.hidden=true;if(!p.name)return fail("Enter your full name.","name");if(!p.email)return fail("Enter your email address.","email");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))return fail("Enter a valid email address, such as name@example.com.","email");if(p.phone.replace(/\D/g,"").length<10)return fail("Enter a valid mobile number with at least 10 digits.","phone");if(!p.college)return fail("Search for and select your college or institution.","collegeSearch");if(!p.gender)return fail("Select your gender to continue.","gender");if(!document.getElementById("privacyConsent").checked)return fail("Please read the privacy notice and check the consent box before continuing.","privacyConsent");if(!selected.size)return fail("Add at least one event before continuing.","payBtn");return true;}
-document.getElementById("mobilePayBtn").addEventListener("click",()=>document.getElementById("payBtn").click());
+document.getElementById("mobilePayBtn").addEventListener("click",()=>document.getElementById("continueCheckout").click());
 document.getElementById("payBtn").addEventListener("click",async()=>{
  const p=participant();if(!valid(p))return;
  const button=document.getElementById("payBtn"),mobileButton=document.getElementById("mobilePayBtn"),original=button.textContent,loading=document.getElementById("paymentLoading");button.disabled=true;mobileButton.disabled=true;button.textContent="Preparing secure PayU checkout…";loading.classList.add("show");document.getElementById("loadingTitle").textContent="Preparing secure checkout";document.getElementById("loadingMessage").textContent="We’re validating your registration and creating your PayU payment request. Please keep this page open.";
@@ -584,5 +584,113 @@ renderEvents();renderCart();
 })();
 </script>
 
+
+<style>
+/* Clean, icon-free date selection and two-step registration */
+.logo,.date-picker-icon,.category-icon,.detail-orb,.detail-arrow,.choice-icon,.choice-chevron,.event-type-mark,.trust-icon{display:none!important}
+.top .brand h1{letter-spacing:.025em}
+.date-picker-panel{overflow:visible!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#fff!important;border:1px solid var(--line)!important;box-shadow:0 4px 16px #10233f08!important}
+.date-picker-panel:before{display:none!important}
+.date-picker-heading{gap:0!important}
+.date-picker-panel .date-selector-label{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:12px 0 10px}
+.date-picker-panel .date-selector-label small{font-size:10px;white-space:normal;overflow-wrap:anywhere;text-align:right;color:#2458bc;font-weight:800}
+.date-picker-panel .date-selector{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:0;background:transparent}
+.date-picker-panel .date-option{min-width:0;min-height:82px;padding:10px 6px;border:1px solid #d9e2ef;border-radius:12px;background:#fff;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.date-picker-panel .date-option span{font-size:24px;line-height:1.1;font-weight:850;color:var(--navy)}
+.date-picker-panel .date-option small{font-size:10px;color:#6a7890}
+.date-picker-panel .date-option em{font-size:9px;font-style:normal;font-weight:850;color:#6a7890}
+.date-picker-panel .date-option.active{background:#edf5ff;border-color:#4b7de4;box-shadow:0 0 0 2px #dce8ff;color:#174caa}
+.date-picker-panel .date-option.active span,.date-picker-panel .date-option.active em{color:#174caa}
+.date-picker-panel .date-detail{display:block!important;margin-top:10px;padding:11px 12px;background:#f6f8fc;border:1px solid #e8edf4;border-radius:10px}
+.date-picker-panel .date-detail strong,.date-picker-panel .date-detail small{display:block;overflow-wrap:anywhere;white-space:normal}
+.date-picker-panel .date-detail strong{font-size:12px;color:var(--navy)}
+.date-picker-panel .date-detail small{font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
+.choice-shell{padding-left:10px}
+.choice-shell select{padding-left:2px!important}
+#checkoutStep{display:none;max-width:1180px;margin:0 auto;padding:14px 20px 60px}
+#checkoutStep.active{display:block}
+.checkout-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
+.checkout-head h2{margin:0;color:var(--navy);font-size:clamp(24px,3vw,34px);letter-spacing:-.03em}
+.checkout-head p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.step-pill{white-space:nowrap;font-size:11px;font-weight:850;color:#2458bc;background:#edf3ff;border:1px solid #d9e6ff;border-radius:99px;padding:8px 12px}
+.checkout-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);align-items:start;gap:18px}
+.checkout-form-panels{display:grid;gap:14px;min-width:0}
+.checkout-order{position:sticky;top:14px}
+.checkout-order .cart-list{max-height:360px;overflow:auto}
+.checkout-nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.checkout-nav button{border:1px solid var(--line);border-radius:11px;padding:12px 16px;font-weight:800;background:#fff;color:var(--navy)}
+.checkout-nav .primary{background:var(--navy);border-color:var(--navy);color:#fff}
+#registration.checkout-hidden{display:none!important}
+#registration .side .panel[data-checkout-moved="true"]{display:none}
+@media(max-width:850px){.checkout-layout{grid-template-columns:1fr}.checkout-order{position:static}}
+@media(max-width:520px){#checkoutStep{padding:14px 14px 35px}.checkout-head{align-items:flex-start;flex-direction:column;gap:8px}.checkout-order .cart-list{max-height:none}.date-picker-panel .date-option{min-height:76px}}
+</style>
+<script>
+(() => {
+ const root=document.getElementById("registration");
+ const side=root&&root.querySelector(".side");
+ if(!root||!side||document.getElementById("checkoutStep"))return;
+ const panels=[...side.querySelectorAll(":scope > .panel")];
+ const participantPanel=panels.find(p=>p.querySelector("h3")?.textContent.trim()==="Participant details");
+ const extrasPanel=panels.find(p=>p.querySelector("h3")?.textContent.trim()==="Food & accommodation");
+ const cartPanel=panels.find(p=>p.querySelector("#cartList"));
+ const datePanel=panels.find(p=>p.classList.contains("date-picker-panel"));
+ if(!participantPanel||!extrasPanel||!cartPanel||!datePanel)return;
+ const checkout=document.createElement("section");
+ checkout.id="checkoutStep";
+ checkout.innerHTML='<div class="checkout-head"><div><h2>Complete your registration</h2><p>Your selected events are saved. Enter participant details and review any optional add-ons before payment.</p></div><span class="step-pill">STEP 2 OF 2 · CHECKOUT</span></div><div class="checkout-layout"><div class="checkout-form-panels"></div><aside class="checkout-order"><div class="panel"><div class="panel-head"><h3>Order summary</h3><span class="count" id="checkoutCount">0 selected</span></div><div id="checkoutCartList" class="cart-list"></div><div class="cart-summary"><span>Selected events</span><strong id="checkoutEventSubtotal">₹0</strong></div><p class="smallnote">Your final total, including food and accommodation if selected, is shown in the checkout panel.</p></div><div class="checkout-nav"><button type="button" id="backToEvents">← Back to events</button></div></aside></div>';
+ root.insertAdjacentElement("afterend",checkout);
+ const formPanels=checkout.querySelector(".checkout-form-panels");
+ formPanels.append(participantPanel,extrasPanel);
+ participantPanel.dataset.checkoutMoved="true";extrasPanel.dataset.checkoutMoved="true";
+ const mobile=document.getElementById("mobileCheckout");
+ if(mobile)mobile.style.display="none";
+ const continueButton=document.createElement("button");
+ continueButton.type="button";continueButton.id="continueCheckout";continueButton.className="pay";continueButton.textContent="Continue to participant details →";
+ continueButton.style.marginTop="14px";
+ cartPanel.appendChild(continueButton);
+ const status=document.createElement("p");
+ status.id="continueHint";status.className="smallnote";status.textContent="Select at least one event to continue to checkout.";
+ cartPanel.appendChild(status);
+ const nav=document.createElement("div");nav.className="checkout-nav";
+ const back=document.createElement("button");back.type="button";back.className="primary";back.textContent="← Back to event selection";back.addEventListener("click",showEvents);nav.appendChild(back);
+ extrasPanel.appendChild(nav);
+ const orderList=checkout.querySelector("#checkoutCartList");
+ function refreshOrder(){
+  const selectedItems=[...document.querySelectorAll("#cartList .cart-item")];
+  orderList.innerHTML=selectedItems.length?selectedItems.map(x=>x.outerHTML).join(""):'<div class="empty">No events selected yet. Go back and choose at least one event.</div>';
+  const count=document.getElementById("count")?.textContent||"0 selected";
+  checkout.querySelector("#checkoutCount").textContent=count;
+  checkout.querySelector("#checkoutEventSubtotal").textContent=document.getElementById("eventSubtotal")?.textContent||"₹0";
+ }
+ function showCheckout(){
+  if(!document.querySelectorAll("#events .event.selected").length){
+   status.textContent="Please add at least one event to your cart before continuing.";
+   status.style.color="#a12d36";
+   cartPanel.scrollIntoView({behavior:"smooth",block:"center"});
+   return;
+  }
+  root.classList.add("checkout-hidden");
+  checkout.classList.add("active");
+  if(mobile)mobile.style.display="none";
+  refreshOrder();
+  window.scrollTo({top:checkout.offsetTop-12,behavior:"smooth"});
+ }
+ function showEvents(){
+  checkout.classList.remove("active");
+  root.classList.remove("checkout-hidden");
+  if(mobile&&window.matchMedia("(max-width:520px)").matches)mobile.style.display="flex";
+  window.scrollTo({top:root.offsetTop-12,behavior:"smooth"});
+ }
+ continueButton.addEventListener("click",showCheckout);
+ document.getElementById("backToEvents").addEventListener("click",showEvents);
+ const oldRenderCart=window.renderCart;
+ // Keep the step-two order summary synchronized with the live cart.
+ const cartList=document.getElementById("cartList");
+ new MutationObserver(()=>{if(checkout.classList.contains("active"))refreshOrder();const hasItems=!!document.querySelector("#events .event.selected");continueButton.disabled=!hasItems;continueButton.style.opacity=hasItems?"1":".62";status.textContent=hasItems?"Ready when you are. Continue to enter participant details.":"Select at least one event to continue to checkout.";}).observe(cartList,{childList:true,subtree:true,characterData:true});
+ continueButton.disabled=true;continueButton.style.opacity=".62";
+ document.getElementById("mobilePayBtn")?.addEventListener("click",showCheckout);
+})();
+</script>
 </body>
 </html>
