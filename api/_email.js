@@ -169,8 +169,23 @@ async function sendRegistrationEmail(txnid, requestedStage) {
     headers: { "api-key": apiKey, "accept": "application/json", "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error("Brevo email failed: " + (result.message || result.code || response.status));
+  const raw = await response.text();
+  let result = {};
+  try {
+    result = JSON.parse(raw);
+  } catch {
+    // Preserve non-JSON response text for diagnostics.
+  }
+  if (!response.ok) {
+    // Log status and response body only, never API keys or request headers.
+    console.error("Brevo API error:", {
+      status: response.status,
+      body: raw.slice(0, 1500)
+    });
+    throw new Error(
+      `Brevo email failed (HTTP ${response.status}): ${result.message || result.code || raw.slice(0, 300) || "Empty response"}`
+    );
+  }
   const { error: sentError } = await client.from("registrations")
     .update({ [sentColumn]: new Date().toISOString() })
     .eq("txnid", txnid).is(sentColumn, null);
