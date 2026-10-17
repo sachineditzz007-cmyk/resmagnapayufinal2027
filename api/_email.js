@@ -123,7 +123,7 @@ async function sendRegistrationEmail(txnid, requestedStage) {
       <div style="font-size:14px;font-weight:700;color:#ffffff">Thank you for being part of RESMAGNA 2027.</div>
       <div style="font-size:12px;line-height:1.8;color:#c4d2e2;margin-top:7px">We look forward to welcoming you for three days of learning, collaboration and celebration.</div>
       <div style="height:1px;background:#31465f;margin:18px 0"></div>
-      <div style="font-size:12px;letter-spacing:1px;font-weight:800;color:#a6dcd6">CONDUCTING BATCH · SKARXXINOZZ 22</div>
+      <div style="font-size:12px;letter-spacing:1px;font-weight:800;color:#a6dcd6">CONDUCTING BATCH · SKARXXIINOZZ 22</div>
       <div style="font-size:10px;line-height:1.7;color:#91a5bb;margin-top:8px">RESMAGNA 2027 · Government Thoothukudi Medical College</div>
     </td></tr>
   </table>
@@ -156,7 +156,7 @@ async function sendRegistrationEmail(txnid, requestedStage) {
       "Total registration amount: " + money(row.amount),
       stage === "success" ? "Your unique QR attendance pass is attached/embedded in this email." : "Your QR attendance pass will be provided in the payment-confirmation email.",
       "Thank you for participating in RESMAGNA 2027.",
-      "Conducting batch: SKARXXINOZZ 22"
+      "Conducting batch: SKARXXIINOZZ 22"
     ].join("\n")
   };
   if (qrDataUrl) body.attachment = [{
