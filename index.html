@@ -20,6 +20,7 @@
 @media(max-width:520px){.choice-row{gap:4px}.choice-shell{min-height:46px}.choice-icon{width:30px;height:30px;flex-basis:30px;margin-left:5px}.choice-shell select{font-size:11px;padding-left:7px!important;padding-right:3px!important}.choice-chevron{width:27px;flex-basis:27px;margin-right:4px}.optional-tag,.required-tag{font-size:8px;padding:3px 5px}.choice-hint{font-size:9px}.top-nav{gap:10px}.top-nav a{font-size:11px}.mobile-checkout{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -10px 35px #142a4518}.mobile-total span{display:block;font-size:10px;color:var(--muted);font-weight:700}.mobile-total strong{display:block;font-size:21px;color:var(--navy)}.mobile-checkout button{border:0;border-radius:11px;background:linear-gradient(100deg,#2463eb,#168c99);color:white;font-size:12px;font-weight:850;padding:13px 16px;white-space:nowrap}.mobile-checkout button:disabled{opacity:.65}body{padding-bottom:90px}}
 .event.conflict{filter:grayscale(1);opacity:.58;background:#f1f3f6;border-color:#d7dce4;box-shadow:none}.event.conflict .add{background:#d7dce4;color:#657080;cursor:not-allowed}.event.conflict-note{margin:10px 0 0;padding:9px 10px;border:1px solid #d6dbe3;border-radius:9px;background:#eef1f5;color:#515d6c;font-size:11px;font-weight:750;line-height:1.45}.event-time{display:flex;align-items:center;gap:6px;color:#334b69;background:#f1f6fc;border:1px solid #e1eaf5;border-radius:8px;padding:7px 9px;margin:0 0 10px;font-size:11px;font-weight:800}.event-time small{font-size:10px;color:#75849a;font-weight:650}.schedule-note{margin:0 0 12px;padding:12px 14px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;color:#53637a;font-size:12px;line-height:1.6}.schedule-note strong{color:var(--navy)}
 .checkout-message{padding:11px 13px;border-radius:11px;font-size:12px;line-height:1.5;margin:10px 0;border:1px solid #f1c5c5;background:#fff3f3;color:#912f36}.checkout-message[hidden]{display:none}.checkout-message.success{border-color:#b6e3c7;background:#effaf3;color:#17633a}.checkout-message.info{border-color:#c9d9f5;background:#f0f6ff;color:#244f91}.pay:disabled,.mobile-checkout button:disabled{opacity:.65;cursor:wait}.event .add:focus-visible,.pay:focus-visible,.filter:focus-visible,button:focus-visible{outline:3px solid #8bb4ff;outline-offset:2px}.field input:focus-visible,.field select:focus-visible{outline:2px solid #8bb4ff;outline-offset:1px}
+.privacy-consent{display:flex;align-items:flex-start;gap:9px;margin-top:12px;color:#58677c;font-size:11px;line-height:1.55}.privacy-consent input{margin-top:3px;flex:0 0 auto;accent-color:var(--blue)}.privacy-consent a{color:#2458bc;font-weight:750}.footer a{color:#b9d5ff;text-decoration:underline;text-underline-offset:3px}
 </style>
 </head>
 <body>
@@ -37,8 +38,8 @@
  <div class="hero-card"><h3>📅 RESMAGNA 2027 · At a glance</h3><p>Government Thoothukudi Medical College · Conducting batch: SKARZXXIINOZZ’ 22. Sample prices and capacities are illustrative.</p><div class="datebox"><div style="font-size:25px">🩺</div><div><strong>3, 4 &amp; 5 January 2027 · RESMAGNA 2027</strong><span>3–5 January 2027 · Workshops · Presentations · Competitions</span></div></div></div>
 </section>
 <main class="layout" id="registration">
- <div id="paymentNotice" class="checkout-message info" role="status" aria-live="polite" hidden></div>
  <section>
+  <div id="paymentNotice" class="checkout-message info" role="status" aria-live="polite" hidden></div>
   <div class="section-head"><div><h3>Choose your events</h3><p>Select events across the three days. Events running at the same time cannot be booked together.</p></div></div>
   <div class="schedule-note"><strong>Daily programme · 9:00 AM–5:00 PM</strong><br>09:00–10:15 AM · Session 1 &nbsp;|&nbsp; 10:15–10:30 AM · Tea break<br>10:30–11:45 AM · Session 2 &nbsp;|&nbsp; 11:45 AM–12:00 PM · Transition break<br>12:00–1:00 PM · Session 3 &nbsp;|&nbsp; <strong>1:00–2:00 PM · Lunch break</strong><br>2:00–3:30 PM · Session 4 &nbsp;|&nbsp; 3:30–3:45 PM · Tea break<br>3:45–5:00 PM · Session 5<br><span style="color:#7b8798">Parallel events share a session slot. This is a proposed timetable and should be confirmed by the organizers.</span></div>
   <div class="filterbar" id="filters">
@@ -51,7 +52,7 @@
    <div class="panel-head"><h3>🛒 Your event cart</h3><span class="count" id="count" aria-live="polite" aria-atomic="true">0 selected</span></div>
    <div id="cartList" class="cart-list"><div class="empty">Your cart is waiting for its first event. Pick an activity to begin.</div></div>
    <button class="toggle" id="toggleCart" style="display:none">Show all selected events ↓</button>
-   <div class="cart-summary"><span>Event subtotal</span><strong id="eventSubtotal">₹0</strong></div>
+   <div class="cart-summary"><span>Event subtotal</span><strong id="eventSubtotal" aria-live="polite" aria-atomic="true">₹0</strong></div>
   </div>
   <div class="panel">
    <h3>Participant details</h3>
@@ -71,6 +72,7 @@
    <label class="addon"><input type="checkbox" id="stayPlus" value="2800"><span><strong>Private room upgrade</strong><span>2 nights, single occupancy; replaces shared stay</span></span><em>₹2,800</em></label>
    <div style="height:1px;background:var(--line);margin:16px 0"></div>
    <div class="total-line"><span>Events</span><strong id="sumEvents">₹0</strong></div><div class="total-line"><span>Food</span><strong id="sumFood">₹0</strong></div><div class="total-line"><span>Accommodation</span><strong id="sumStay">₹0</strong></div><div class="total-line final"><span>Total (INR)</span><strong id="grandTotal" aria-live="polite" aria-atomic="true">₹0</strong></div>
+   <label class="privacy-consent"><input id="privacyConsent" type="checkbox" required> <span>I have read the <a href="/privacy.html" target="_blank" rel="noopener noreferrer">privacy notice</a> and agree that my registration details may be used to administer RESMAGNA 2027 and verify payment.</span></label>
    <div id="checkoutMessage" class="checkout-message" role="alert" aria-live="assertive" hidden></div>
    <button class="pay" id="payBtn">Pay securely with PayU →</button>
    <p class="secure">🔒 Secure PayU hosted checkout. Payment status is confirmed by the server.</p>
@@ -94,7 +96,7 @@
   </article>
  </div>
 </section>
-<div class="mobile-checkout" id="mobileCheckout" aria-label="Sticky checkout summary"><div class="mobile-total"><span>FINAL TOTAL</span><strong id="mobileGrandTotal">₹0</strong></div><button id="mobilePayBtn" type="button">Continue to PayU →</button></div>
+<div class="mobile-checkout" id="mobileCheckout" aria-label="Sticky checkout summary"><div class="mobile-total"><span>FINAL TOTAL</span><strong id="mobileGrandTotal" aria-live="polite" aria-atomic="true">₹0</strong></div><button id="mobilePayBtn" type="button">Continue to PayU →</button></div>
 <div class="payment-loading" id="paymentLoading" role="dialog" aria-modal="true" aria-labelledby="loadingTitle" aria-describedby="loadingMessage"><div class="loading-card"><div class="spinner" aria-hidden="true"></div><h3 id="loadingTitle">Preparing secure checkout</h3><p id="loadingMessage">We’re validating your registration and creating your PayU payment request. Please keep this page open.</p></div></div>
 <section class="admin">
  <details>
@@ -114,7 +116,7 @@
  </details>
 </section>
 
-<footer class="footer">RESMAGNA 2027 · Registration portal<br>Conducted by SKARZXXIINOZZ’ 22 · Government Thoothukudi Medical College.</footer>
+<footer class="footer">RESMAGNA 2027 · Registration portal<br>Conducted by SKARZXXIINOZZ’ 22 · Government Thoothukudi Medical College.<br><a href="/privacy.html">Privacy notice</a> · <a href="mailto:sachinst557@gmail.com">Registration support</a></footer>
 
 <script>
 const eventData = [
@@ -197,7 +199,7 @@ document.getElementById("stay").addEventListener("change",()=>{if(document.getEl
 document.getElementById("stayPlus").addEventListener("change",()=>{if(document.getElementById("stayPlus").checked)document.getElementById("stay").checked=false;renderCart();});
 document.getElementById("food").addEventListener("change",renderCart);
 function participant(){return {name:document.getElementById("name").value.trim(),email:document.getElementById("email").value.trim(),phone:document.getElementById("phone").value.trim(),college:document.getElementById("college").value.trim(),gender:document.getElementById("gender").value,year:document.getElementById("year").value,diet:document.getElementById("diet").value};}
-function valid(p){const box=document.getElementById("checkoutMessage");const fail=(message,target)=>{box.textContent=message;box.hidden=false;box.className="checkout-message";const el=target&&document.getElementById(target);if(el)el.focus();return false;};box.hidden=true;if(!p.name)return fail("Enter your full name.","name");if(!p.email)return fail("Enter your email address.","email");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))return fail("Enter a valid email address, such as name@example.com.","email");if(p.phone.replace(/\D/g,"").length<10)return fail("Enter a valid mobile number with at least 10 digits.","phone");if(!p.college)return fail("Search for and select your college or institution.","collegeSearch");if(!p.gender)return fail("Select your gender to continue.","gender");if(!selected.size){box.scrollIntoView({behavior:"smooth",block:"nearest"});return fail("Add at least one event before continuing.","payBtn");}return true;}
+function valid(p){const box=document.getElementById("checkoutMessage");const fail=(message,target)=>{box.textContent=message;box.hidden=false;box.className="checkout-message";const el=target&&document.getElementById(target);if(el)el.focus();return false;};box.hidden=true;if(!p.name)return fail("Enter your full name.","name");if(!p.email)return fail("Enter your email address.","email");if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(p.email))return fail("Enter a valid email address, such as name@example.com.","email");if(p.phone.replace(/\D/g,"").length<10)return fail("Enter a valid mobile number with at least 10 digits.","phone");if(!p.college)return fail("Search for and select your college or institution.","collegeSearch");if(!p.gender)return fail("Select your gender to continue.","gender");if(!document.getElementById("privacyConsent").checked)return fail("Please read the privacy notice and check the consent box before continuing.","privacyConsent");if(!selected.size)return fail("Add at least one event before continuing.","payBtn");return true;}
 document.getElementById("mobilePayBtn").addEventListener("click",()=>document.getElementById("payBtn").click());
 document.getElementById("payBtn").addEventListener("click",async()=>{
  const p=participant();if(!valid(p))return;
@@ -226,7 +228,7 @@ renderEvents();renderCart();
  const el = id => document.getElementById(id);
  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const money = v => "₹" + Number(v || 0).toLocaleString("en-IN", {minimumFractionDigits:2,maximumFractionDigits:2});
- function csvCell(v) { const s = String(v ?? ""); return '"' + s.replace(/"/g,'""') + '"'; }
+ function csvCell(v) { let s = String(v ?? ""); if (/^[\\t\\r ]*[=+\\-@]/.test(s)) s = "'" + s; return '"' + s.replace(/"/g,'""') + '"'; }
  function renderRows() {
   const body = el("registrationsBody");
   if (!registrations.length) { body.innerHTML='<tr><td colspan="13" style="padding:14px;color:var(--muted)">No registrations found.</td></tr>'; return; }
