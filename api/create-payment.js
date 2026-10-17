@@ -10,9 +10,10 @@ module.exports = async (req, res) => {
     const email = String(p.email || "").trim().toLowerCase().slice(0, 160);
     const phone = String(p.phone || "").replace(/\D/g, "").slice(0, 15);
     const college = String(p.college || "").trim().slice(0, 180);
+    const gender = String(p.gender || "").trim();
     const year = String(p.year || "").trim().slice(0, 60);
     const diet = String(p.diet || "").trim().slice(0, 40);
-    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 10 || !college) return res.status(400).json({ error: "Enter valid name, email, mobile and college details." });
+    if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 10 || !college || !["Male", "Female"].includes(gender)) return res.status(400).json({ error: "Enter valid name, email, mobile, college and gender details." });
     const accommodation = body.accommodation || "none";
     const cart = calculate(body.eventIds, body.food, accommodation); // Never trust a browser-supplied amount.
     const amount = amountString(cart.total);
@@ -26,7 +27,7 @@ module.exports = async (req, res) => {
     const hash = sha512(hashString);
     const db = supabase();
     const { error } = await db.from("registrations").insert({
-      txnid, name, email, phone, college, course_year: year, food_preference: diet,
+      txnid, name, email, phone, college, gender, course_year: year, food_preference: diet,
       attendance_token: crypto.randomBytes(24).toString("base64url"),
       events: cart.events, event_ids: body.eventIds, event_total: cart.eventTotal,
       food_selected: body.food, food_amount: cart.foodTotal,
