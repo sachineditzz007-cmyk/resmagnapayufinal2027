@@ -19,11 +19,12 @@ function esc(value) {
 }
 const money = value => "₹" + Number(value || 0).toLocaleString("en-IN");
 const label = value => String(value || "none").replace(/[_-]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+const attendanceLabel = dates => (Array.isArray(dates) ? dates : []).map(date => ({ "2027-01-03":"Sunday, 3 January 2027", "2027-01-04":"Monday, 4 January 2027", "2027-01-05":"Tuesday, 5 January 2027" }[date] || date)).join(", ") || "Not provided";
 
 async function sendRegistrationEmail(txnid, requestedStage) {
   const client = db();
   const { data: row, error } = await client.from("registrations")
-    .select("txnid,name,email,phone,college,gender,course_year,food_preference,events,event_total,food_selected,food_amount,accommodation,accommodation_amount,amount,payment_status,attendance_token,pending_email_sent_at,failure_email_sent_at,confirmation_email_sent_at,created_at")
+    .select("txnid,name,email,phone,college,gender,course_year,food_preference,attendance_dates,events,event_total,food_selected,food_amount,accommodation,accommodation_amount,amount,payment_status,attendance_token,pending_email_sent_at,failure_email_sent_at,confirmation_email_sent_at,created_at")
     .eq("txnid", txnid).maybeSingle();
   if (error) throw error;
   if (!row) throw new Error("Registration not found");
@@ -96,7 +97,7 @@ async function sendRegistrationEmail(txnid, requestedStage) {
       <h2 style="font-size:16px;margin:0 0 12px;color:#172d47">Participant information</h2>
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;font-size:13px">
         ${[
-          ["Full name",row.name],["Email address",row.email],["Mobile number",row.phone],["College / institution",row.college],["Gender",row.gender || "Not provided"],["Course / year",row.course_year]
+          ["Full name",row.name],["Email address",row.email],["Mobile number",row.phone],["College / institution",row.college],["Gender",row.gender || "Not provided"],["Course / year",row.course_year],["Attendance dates",attendanceLabel(row.attendance_dates)]
         ].map(([k,v]) => '<tr><td width="39%" style="padding:10px 0;border-bottom:1px solid #edf1f6;color:#75869a;vertical-align:top">' + esc(k) + '</td><td style="padding:10px 0;border-bottom:1px solid #edf1f6;color:#263a52;font-weight:600;overflow-wrap:anywhere">' + esc(v) + '</td></tr>').join("")}
       </table>
     </td></tr>
@@ -150,6 +151,7 @@ async function sendRegistrationEmail(txnid, requestedStage) {
       "College: " + row.college,
       "Gender: " + (row.gender || "Not provided"),
       "Course / year: " + row.course_year,
+      "Attendance dates: " + attendanceLabel(row.attendance_dates),
       "Events: " + events.map(e => (e.name || e.id) + " (" + money(e.price) + ")").join(", "),
       "Food: " + (row.food_selected ? label(row.food_preference) + " (" + money(row.food_amount) + ")" : "Not selected"),
       "Accommodation: " + label(row.accommodation) + " (" + money(row.accommodation_amount) + ")",
