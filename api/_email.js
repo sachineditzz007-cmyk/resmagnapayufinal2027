@@ -63,8 +63,8 @@ async function sendRegistrationEmail(txnid, requestedStage) {
       ? { title: "Payment not successful", subtitle: "The payment provider has reported that this transaction was not successful. If your account was debited, please contact the organizers before trying again.", color: "#b45309", pale: "#fff7e6", icon: "!" }
       : { title: "Registration received", subtitle: "Your registration details have been received. Payment is not confirmed yet. We will send you an updated email if the payment is verified.", color: "#9a6700", pale: "#fff8df", icon: "…" };
 
-  const from = required("RESEND_FROM_EMAIL");
-  const apiKey = required("RESEND_API_KEY");
+  const from = required("BREVO_FROM_EMAIL");
+  const apiKey = required("BREVO_API_KEY");
   const subject = (stage === "success" ? "Payment confirmed" : stage === "failure" ? "Payment status update" : "Registration details received") + " · RESMAGNA 2027 · " + row.txnid;
   const qrBlock = stage === "success"
     ? '<div style="margin:22px 0;padding:22px;text-align:center;border:1px dashed #9ab5c9;border-radius:14px;background:#f7fbff"><div style="font-size:12px;letter-spacing:1.5px;font-weight:800;color:#0d7668">YOUR OFFICIAL ATTENDANCE PASS</div><img alt="Unique RESMAGNA 2027 attendance QR pass" width="220" height="220" src="cid:resmagna-qr" style="display:block;width:220px;height:220px;max-width:100%;margin:14px auto 8px"><div style="font-size:12px;color:#60758b">Show this QR code to the organizers at check-in.</div></div>'
@@ -131,14 +131,13 @@ async function sendRegistrationEmail(txnid, requestedStage) {
   </td></tr></table></body></html>`;
 
   const body = {
-    from,
-    reply_to: process.env.RESEND_REPLY_TO || "sachinst557@gmail.com",
-    // TEMPORARY TEST MODE: route all registration status emails to the organizer test inbox.
-    // Before public launch, replace this with: to: [row.email]
-    to: ["sachineditzz007@gmail.com"],
+    sender: { email: from, name: "RESMAGNA 2027" },
+    replyTo: { email: process.env.BREVO_REPLY_TO || "sachinst557@gmail.com" },
+    // Send to the email address supplied by the participant in the registration form.
+    to: [{ email: row.email, name: row.name }],
     subject,
-    html,
-    text: [
+    htmlContent: html,
+    textContent: [
       "RESMAGNA 2027 · Government Thoothukudi Medical College",
       "Dear " + row.name + ",",
       statusConfig.title,
@@ -160,18 +159,18 @@ async function sendRegistrationEmail(txnid, requestedStage) {
       "Conducting batch: SKARXXINOZZ 22"
     ].join("\n")
   };
-  if (qrDataUrl) body.attachments = [{
-    filename: "resmagna-2027-qr.png",
+  if (qrDataUrl) body.attachment = [{
+    name: "resmagna-2027-qr.png",
     content: qrDataUrl.split(",")[1]
   }];
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
-    headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
+    headers: { "api-key": apiKey, "accept": "application/json", "Content-Type": "application/json" },
     body: JSON.stringify(body)
   });
   const result = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error("Resend email failed: " + (result.message || result.name || response.status));
+  if (!response.ok) throw new Error("Brevo email failed: " + (result.message || result.code || response.status));
   const { error: sentError } = await client.from("registrations")
     .update({ [sentColumn]: new Date().toISOString() })
     .eq("txnid", txnid).is(sentColumn, null);
