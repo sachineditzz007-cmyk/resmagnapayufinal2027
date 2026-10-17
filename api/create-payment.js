@@ -15,14 +15,12 @@ module.exports = async (req, res) => {
     const year = String(p.year || "").trim().slice(0, 60);
     const diet = String(p.diet || "").trim().slice(0, 40);
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 10 || !college || !["Male", "Female"].includes(gender)) return res.status(400).json({ error: "Enter valid name, email, mobile, college and gender details." });
-    const attendanceDates = Array.isArray(body.attendanceDates) ? body.attendanceDates : [];
-    const allowedAttendance = [
-      ["2027-01-03"],
-      ["2027-01-03", "2027-01-04"],
-      ["2027-01-03", "2027-01-04", "2027-01-05"]
-    ];
-    if (!allowedAttendance.some(option => JSON.stringify(option) === JSON.stringify(attendanceDates))) {
-      return res.status(400).json({ error: "Choose attendance for 3 January, 3–4 January, or 3–5 January 2027." });
+    const validAttendanceDates = new Set(["2027-01-03", "2027-01-04", "2027-01-05"]);
+    const attendanceDates = Array.isArray(body.attendanceDates)
+      ? [...new Set(body.attendanceDates.filter(date => validAttendanceDates.has(date)))].sort()
+      : [];
+    if (attendanceDates.length === 0) {
+      return res.status(400).json({ error: "Please select at least one attendance date: 3, 4 or 5 January 2027." });
     }
     const accommodation = body.accommodation || "none";
     const cart = calculate(body.eventIds, body.food, accommodation); // Never trust a browser-supplied amount.
