@@ -6,6 +6,7 @@ create table if not exists public.registrations (
   email text not null,
   phone text not null,
   college text not null,
+  gender text check (gender is null or gender in ('Male', 'Female')),
   course_year text,
   food_preference text,
   events jsonb not null default '[]'::jsonb,
@@ -34,6 +35,9 @@ create index if not exists registrations_payment_status_idx
   on public.registrations (payment_status);
 create index if not exists registrations_created_at_idx
   on public.registrations (created_at desc);
+
+-- Upgrade existing installations safely.
+alter table public.registrations add column if not exists gender text;
 
 -- The browser must not read or modify participant/payment records directly.
 -- Server-side API routes use SUPABASE_SERVICE_ROLE_KEY, which bypasses RLS.
