@@ -66,6 +66,7 @@ async function sendRegistrationEmail(txnid) {
     headers: { "Authorization": "Bearer " + apiKey, "Content-Type": "application/json" },
     body: JSON.stringify({
       from,
+      reply_to: process.env.RESEND_REPLY_TO || "sachinst557@gmail.com",
       to: [row.email],
       subject,
       html,
