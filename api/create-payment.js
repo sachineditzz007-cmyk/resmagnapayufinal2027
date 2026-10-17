@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const { sendRegistrationEmail } = require("./_email");
 const { env, supabase, sha512, amountString, calculate } = require("./_shared");
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
@@ -33,6 +34,9 @@ module.exports = async (req, res) => {
       amount: cart.total, payment_status: "pending", productinfo
     });
     if (error) throw error;
+    // Send a registration acknowledgement with the current pending status. Email failure must not block checkout.
+    try { await sendRegistrationEmail(txnid, "pending"); }
+    catch (emailError) { console.error("Pending registration email error:", emailError.message); }
     const fields = {
       key, txnid, amount, productinfo, firstname, email, phone,
       surl: baseUrl + "/api/response", furl: baseUrl + "/api/response", curl: baseUrl + "/api/response",
