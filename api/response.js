@@ -5,6 +5,9 @@ module.exports = async (req, res) => {
   try {
     const data = await parseForm(req);
     const result = await updateFromPayU(data);
+    // Mirror verified payment status and PayU transaction details into Airtable.
+    try { await require("./_airtable").syncRegistration(result.txnid); }
+    catch (syncError) { console.error("Airtable payment-status sync error:", syncError.message); }
     const success = result.payment_status === "success";
     let emailNote = "";
     try {
