@@ -110,6 +110,27 @@
 @media(max-width:760px){.top{align-items:flex-start;padding:16px 16px 17px;gap:10px}.brand{gap:11px;align-items:flex-start}.brand-emblems{gap:6px}.medical-emblem,.college-emblem{width:43px;height:43px;border-radius:13px}.medical-emblem svg{width:37px;height:37px}.college-emblem{border-radius:50%}.college-emblem span{font-size:10px}.college-emblem small{font-size:4px}.brand h1{font-size:clamp(17px,4.8vw,21px);letter-spacing:.025em}.brand-subtitle{font-size:10px!important;margin:4px 0 7px!important}.batch-line{gap:5px}.batch-line span{font-size:7px;padding:4px 5px}.batch-line strong{font-size:10px;letter-spacing:.035em;padding:5px 7px}.header-meta{align-items:flex-end;gap:7px}.college-name{font-size:7px;letter-spacing:.07em}.pill{font-size:8px;padding:7px 8px;letter-spacing:.04em}}
 @media(max-width:480px){.top{display:block;padding:15px 14px 14px}.brand{align-items:center;gap:10px}.brand-emblems{gap:5px}.medical-emblem,.college-emblem{width:38px;height:38px}.medical-emblem svg{width:33px;height:33px}.college-emblem span{font-size:9px}.college-emblem small{font-size:3.5px}.brand h1{font-size:18px;line-height:1.08}.brand-subtitle{font-size:9px!important;margin:4px 0 6px!important}.batch-line{gap:5px}.batch-line span{font-size:6px;letter-spacing:.12em;padding:4px}.batch-line strong{font-size:10px;letter-spacing:.02em;padding:5px 7px}.header-meta{margin:12px 0 0 48px;flex-direction:row;align-items:center;justify-content:space-between;gap:8px}.college-name{text-align:left;font-size:7px;line-height:1.4}.pill{font-size:8px;padding:7px 9px}.panel{border-radius:16px}}
 @media(prefers-reduced-motion:reduce){.medical-emblem svg,.cart-item{animation:none!important}.panel,.cart-item,.add{transition:none!important}}
+
+/* Final mobile registration sequence: hero -> days -> activity filters -> events -> cart -> participant -> add-ons/total/checkout */
+@media(max-width:760px){
+ #registration.layout{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:12px!important}
+ #registration.layout>aside.side{display:contents!important}
+ #registration.layout>section{display:contents!important}
+ #registration #paymentNotice{order:0}
+ #registration .date-picker-panel{order:1!important;width:100%;margin:0}
+ #registration .category-picker-panel{order:2!important;width:100%;margin:0}
+ #registration .section-head{order:3!important}
+ #registration .event-grid{order:4!important;width:100%;min-width:0}
+ #registration .smallnote{order:5!important}
+ #registration .side>.panel:nth-of-type(3){order:6!important;width:100%}
+ #registration .side>.panel:nth-of-type(4){order:7!important;width:100%}
+ #registration .side>.panel:nth-of-type(5){order:8!important;width:100%}
+ #registration .side>.panel:nth-of-type(6){order:9!important;width:100%}
+ #registration .side>.panel:nth-of-type(7){order:10!important;width:100%}
+ #registration .date-picker-panel{position:relative;top:auto}
+ #registration .event-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+
 </style>
 </head>
 <body>
