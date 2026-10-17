@@ -62,6 +62,25 @@
   </div>
  </aside>
 </main>
+
+<section class="admin">
+ <details>
+  <summary>Organizer access · Registration dashboard</summary>
+  <div class="admin-box">
+   <h3 style="margin-top:0">RESMAGNA 2027 registrations</h3>
+   <p class="smallnote">Private organizer view. Set <code>ADMIN_ACCESS_TOKEN</code> in Vercel before using this dashboard. Never share the token with participants.</p>
+   <div class="admin-row"><input id="adminToken" type="password" autocomplete="current-password" placeholder="Organizer access token" aria-label="Organizer access token"><button id="loadRegistrations">Load registrations</button><button id="exportRegistrations" type="button">Export CSV</button></div>
+   <div id="adminMessage" class="verify-result" role="status">Enter your organizer token to load registrations.</div>
+   <div style="overflow:auto;margin-top:14px">
+    <table id="registrationsTable" style="border-collapse:collapse;width:100%;font-size:12px;white-space:nowrap">
+     <thead><tr><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Date</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Name</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Email</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Mobile</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">College</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Year</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Events</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Food</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Accommodation</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Total</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">Payment</th><th style="padding:10px;text-align:left;border-bottom:1px solid var(--line);background:#f8fafc">PayU ref</th></tr></thead>
+     <tbody id="registrationsBody"><tr><td colspan="12" style="padding:14px;color:var(--muted)">No data loaded.</td></tr></tbody>
+    </table>
+   </div>
+  </div>
+ </details>
+</section>
+
 <footer class="footer">RESMAGNA 2027 · Registration portal<br>Conducted by SKARZXXIINOZZ’ 22 · Government Thoothukudi Medical College.</footer>
 
 <script>
@@ -138,5 +157,56 @@ if(params.get("payment")==="return"&&params.get("txnid")){
 }
 renderEvents();renderCart();
 </script>
+
+<script>
+(() => {
+ let registrations = [];
+ const el = id => document.getElementById(id);
+ const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ const money = v => "₹" + Number(v || 0).toLocaleString("en-IN", {minimumFractionDigits:2,maximumFractionDigits:2});
+ function csvCell(v) { const s = String(v ?? ""); return '"' + s.replace(/"/g,'""') + '"'; }
+ function renderRows() {
+  const body = el("registrationsBody");
+  if (!registrations.length) { body.innerHTML='<tr><td colspan="12" style="padding:14px;color:var(--muted)">No registrations found.</td></tr>'; return; }
+  body.innerHTML = registrations.map(r => {
+   const eventNames = Array.isArray(r.events) ? r.events.map(e => e.name || e.id || "").join("; ") : "";
+   const date = r.created_at ? new Date(r.created_at).toLocaleString("en-IN") : "";
+   const status = String(r.payment_status || "pending").toLowerCase();
+   const color = status === "success" ? "#166534" : status === "failure" ? "#991b1b" : "#854d0e";
+   return '<tr>' + [
+    esc(date),esc(r.name),esc(r.email),esc(r.phone),esc(r.college),esc(r.course_year),esc(eventNames),
+    esc(r.food_selected ? "Yes" : "No"),esc(r.accommodation),esc(money(r.amount)),
+    '<span style="display:inline-block;padding:4px 8px;border-radius:20px;background:#f1f5f9;color:'+color+';font-weight:800">'+esc(status)+'</span>',
+    esc(r.payu_txn_id || "—")
+   ].map(v=>'<td style="padding:10px;border-bottom:1px solid var(--line);vertical-align:top">'+v+'</td>').join("") + '</tr>';
+  }).join("");
+ }
+ el("loadRegistrations").addEventListener("click", async () => {
+  const token = el("adminToken").value;
+  if (!token) { el("adminMessage").className="verify-result bad";el("adminMessage").textContent="Enter the organizer token first.";return; }
+  el("loadRegistrations").disabled = true;
+  el("adminMessage").className="verify-result";el("adminMessage").textContent="Loading registrations…";
+  try {
+   const response = await fetch("/api/admin-registrations", {headers:{Authorization:"Bearer "+token}});
+   const data = await response.json();
+   if (!response.ok) throw new Error(data.error || "Could not load registrations.");
+   registrations = data.registrations || [];
+   renderRows();
+   el("adminMessage").className="verify-result ok";
+   el("adminMessage").textContent=registrations.length+" registration record(s) loaded. Only verified successful payments should be treated as paid.";
+  } catch (error) {
+   registrations=[];renderRows();el("adminMessage").className="verify-result bad";el("adminMessage").textContent=error.message || "Could not load registrations.";
+  } finally { el("loadRegistrations").disabled=false; }
+ });
+ el("exportRegistrations").addEventListener("click", () => {
+  if (!registrations.length) { el("adminMessage").className="verify-result bad";el("adminMessage").textContent="Load registrations before exporting.";return; }
+  const headers=["Created at","Transaction reference","Name","Email","Phone","College","Course/year","Events","Event total","Food selected","Food amount","Accommodation","Accommodation amount","Total amount","Payment status","PayU transaction ID","PayU mode"];
+  const rows=registrations.map(r=>[r.created_at,r.txnid,r.name,r.email,r.phone,r.college,r.course_year,(r.events||[]).map(e=>e.name||e.id||"").join("; "),r.event_total,r.food_selected,r.food_amount,r.accommodation,r.accommodation_amount,r.amount,r.payment_status,r.payu_txn_id,r.payu_mode]);
+  const blob=new Blob(["\uFEFF"+[headers,...rows].map(row=>row.map(csvCell).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="resmagna-2027-registrations.csv";a.click();URL.revokeObjectURL(url);
+ });
+})();
+</script>
+
 </body>
 </html>
