@@ -449,10 +449,15 @@ const conferencePackages={
 function setAttendancePackage(packageId){
  const pkg=conferencePackages[packageId]||conferencePackages["1"];
  selectedConferenceDays=[...pkg.days];selectedConferenceDates=[...pkg.dates];
+ let removedCount=0;
+ eventData.forEach(event=>{if(selected.has(event.id)&&!selectedConferenceDays.includes(event.day)){selected.delete(event.id);removedCount++;}});
  document.querySelectorAll("[data-conference-package]").forEach(button=>{const active=button.dataset.conferencePackage===String(packageId);button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));});
  document.getElementById("selectedDateLabel").textContent=pkg.label;
- document.getElementById("dateDetail").innerHTML='<span class="detail-orb">✦</span><span><strong>'+pkg.title+'</strong><small>'+pkg.copy+'</small></span><span class="detail-arrow">↗</span>';
- renderEvents();
+ const allFilter=document.querySelector('#filters [data-filter="All"]');
+ if(allFilter)allFilter.textContent="All "+eventData.filter(event=>selectedConferenceDays.includes(event.day)).length;
+ const detailCopy=pkg.copy+(removedCount?" Events outside these dates were removed from your cart.":"");
+ document.getElementById("dateDetail").innerHTML='<span class="detail-orb">✦</span><span><strong>'+pkg.title+'</strong><small>'+detailCopy+'</small></span><span class="detail-arrow">↗</span>';
+ renderEvents();renderCart();
 }
 document.querySelectorAll("[data-conference-package]").forEach(button=>button.addEventListener("click",()=>setAttendancePackage(button.dataset.conferencePackage)));
 function updateConferenceCountdown(){const target=new Date("2027-01-03T09:00:00+05:30").getTime(),diff=Math.max(0,target-Date.now());const values={countDays:String(Math.floor(diff/86400000)).padStart(2,"0"),countHours:String(Math.floor(diff%86400000/3600000)).padStart(2,"0"),countMins:String(Math.floor(diff%3600000/60000)).padStart(2,"0"),countSecs:String(Math.floor(diff%60000/1000)).padStart(2,"0")};Object.entries(values).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value;});}
