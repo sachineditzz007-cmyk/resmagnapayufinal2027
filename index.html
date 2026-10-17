@@ -222,7 +222,7 @@
  <div class="brand">
   <div class="brand-emblems" aria-label="Medical emblem and college identification">
    <div class="medical-emblem" title="Medical emblem" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><circle cx="32" cy="32" r="29" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"/><path d="M32 12v40M21 22c-5 0-7 4-7 9 0 6 4 9 9 9h9M43 22c5 0 7 4 7 9 0 6-4 9-9 9h-9" fill="none" stroke="#9ff3e5" stroke-width="2.2" stroke-linecap="round"/><path d="M32 14c-5 3-7 7-7 11s4 6 7 8c3 2 7 4 7 9s-3 7-7 8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M22 14l10 5 10-5M22 50l10-5 10 5" fill="none" stroke="#9ff3e5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-   <div class="college-emblem" aria-label="Government Thoothukudi Medical College, text identification"><span>GTMC</span><small>THOOTHUKUDI</small></div>
+   <div class="college-emblem" aria-label="Government Thoothukudi Medical College, text identification"><span>TKMC</span><small>THOOTHUKUDI</small></div>
   </div>
   <div class="brand-copy"><h1>RESMAGNA <span>2027</span></h1><p class="brand-subtitle">Intercollegiate Medical Conference</p><p class="batch-line"><span>HOST BATCH</span><strong>SKARZXXIINOZZ’ 22</strong></p></div>
  </div>
@@ -796,5 +796,51 @@ renderEvents();renderCart();
  #registration .addon:hover,#registration .addon:active{transform:none!important}
 }
 </style>
-\n</body>
+\n
+<style>
+/* TKMC branding and mobile countdown/date layout */
+.college-emblem span{font-size:12px!important;letter-spacing:.025em!important}
+@media(max-width:760px){
+ .hero-card{display:block!important;visibility:visible!important;opacity:1!important}
+ .hero-card .event-launch{display:block!important;visibility:visible!important;opacity:1!important}
+ .hero-card .countdown-glass{display:grid!important;visibility:visible!important;opacity:1!important}
+ .hero-card .mobile-date-panel{
+  display:block!important;visibility:visible!important;opacity:1!important;
+  width:100%!important;min-width:0!important;margin:12px 0 0!important;
+  padding:13px!important;border-radius:15px!important;position:relative!important;
+  top:auto!important;order:initial!important;
+ }
+ .hero-card .mobile-date-panel .date-selector{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(min-width:761px){.hero-card .mobile-date-panel{display:none!important}}
+</style>
+<script>
+/* Place the date selector directly below the countdown on mobile, without changing desktop order. */
+(()=>{
+ const panel=document.querySelector('#registration .date-picker-panel');
+ const hero=document.querySelector('.hero-card');
+ const launch=hero&&hero.querySelector('.event-launch');
+ const side=panel&&panel.parentElement;
+ if(!panel||!hero||!launch||!side)return;
+ const originalNext=panel.nextElementSibling;
+ const desktopQuery=window.matchMedia('(max-width:760px)');
+ const placePanel=()=>{
+  if(desktopQuery.matches){
+   panel.classList.add('mobile-date-panel');
+   launch.insertAdjacentElement('afterend',panel);
+  }else{
+   panel.classList.remove('mobile-date-panel');
+   if(panel.parentElement!==side){
+    if(originalNext&&originalNext.parentElement===side)side.insertBefore(panel,originalNext);
+    else side.insertBefore(panel,side.firstChild);
+   }
+  }
+ };
+ placePanel();
+ if(desktopQuery.addEventListener)desktopQuery.addEventListener('change',placePanel);
+ else desktopQuery.addListener(placePanel);
+})();
+</script>
+
+</body>
 </html>
