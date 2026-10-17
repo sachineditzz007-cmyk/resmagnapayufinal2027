@@ -133,7 +133,9 @@ async function sendRegistrationEmail(txnid, requestedStage) {
   const body = {
     from,
     reply_to: process.env.RESEND_REPLY_TO || "sachinst557@gmail.com",
-    to: [row.email],
+    // TEMPORARY TEST MODE: route all registration status emails to the organizer test inbox.
+    // Before public launch, replace this with: to: [row.email]
+    to: ["sachineditzz007@gmail.com"],
     subject,
     html,
     text: [
