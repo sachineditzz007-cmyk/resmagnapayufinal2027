@@ -245,7 +245,7 @@
   <div class="event-grid" id="events"></div><p class="smallnote">Images are illustrative and sourced from Unsplash. Faculty names, final session plans, physical gifts and capacities will be published only after organizer confirmation.</p>
  </section>
  <aside class="side">
-  <div class="panel date-picker-panel"><div class="date-picker-heading"><span class="date-picker-icon">✦</span><div><h3>Choose the date you’re attending</h3><p>Select your conference day and explore the activities available</p></div></div><div class="date-selector-label"><span>Your conference date</span><small id="selectedDateLabel">DAY 1 · SUNDAY, 3 JAN</small></div><div class="date-selector" role="group" aria-label="Select conference day"><button class="date-option active" type="button" data-conference-day="Day 1" aria-pressed="true"><span>03</span><small>JAN</small><em>DAY 1</em></button><button class="date-option" type="button" data-conference-day="Day 2" aria-pressed="false"><span>04</span><small>JAN</small><em>DAY 2</em></button><button class="date-option" type="button" data-conference-day="Day 3" aria-pressed="false"><span>05</span><small>JAN</small><em>DAY 3</em></button></div><div class="date-detail" id="dateDetail"><span class="detail-orb">✦</span><span><strong>Day 1 · Sunday, 3 January</strong><small>Explore workshops, clinical skills and academic competitions</small></span><span class="detail-arrow">↗</span></div><div class="category-picker-heading combined-activity-heading"><span class="category-icon">✦</span><div><h3>Explore activities</h3><p>Filter the programme by activity type</p></div></div><div class="filterbar" id="filters"><button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Workshop">Workshops</button><button class="filter" data-filter="Competition">Competitions</button></div></div>  <div class="panel">
+  <div class="panel date-picker-panel"><div class="date-picker-heading"><span class="date-picker-icon">✦</span><div><h3>Choose your attendance dates</h3><p>Select one of the three attendance options. Activities will match your selected dates.</p></div></div><div class="date-selector-label"><span>Your attendance dates</span><small id="selectedDateLabel">3 JAN 2027 ONLY</small></div><div class="date-selector" role="group" aria-label="Choose attendance dates"><button class="date-option active" type="button" data-conference-package="1" aria-pressed="true"><span>03</span><small>JAN 2027</small><em>1 DAY</em></button><button class="date-option" type="button" data-conference-package="2" aria-pressed="false"><span>03–04</span><small>JAN 2027</small><em>2 DAYS</em></button><button class="date-option" type="button" data-conference-package="3" aria-pressed="false"><span>03–05</span><small>JAN 2027</small><em>3 DAYS</em></button></div><div class="date-detail" id="dateDetail"><span class="detail-orb">✦</span><span><strong>Sunday, 3 January 2027</strong><small>Attendance selected for 3 January only</small></span><span class="detail-arrow">↗</span></div><div class="category-picker-heading combined-activity-heading"><span class="category-icon">✦</span><div><h3>Explore activities</h3><p>Filter the programme by activity type</p></div></div><div class="filterbar" id="filters"><button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Workshop">Workshops</button><button class="filter" data-filter="Competition">Competitions</button></div></div>  <div class="panel">
    <div class="panel-head"><h3>🛒 Your event cart</h3><span class="count" id="count" aria-live="polite" aria-atomic="true">0 selected</span></div>
    <div id="cartList" class="cart-list"><div class="empty">Your cart is waiting for its first event. Pick an activity to begin.</div></div>
    <button class="toggle" id="toggleCart" style="display:none">Show all selected events ↓</button>
@@ -386,7 +386,7 @@ const tamilNaduMedicalColleges=[{"name":"ACS Medical College and Hospital, Chenn
  document.addEventListener("click",e=>{if(!e.target.closest(".college-picker"))closeList();});
 })();
 
-const selected = new Set(); let activeFilter = "All", expanded = false;
+const selected = new Set(); let activeFilter = "All", expanded = false; let selectedConferenceDays = ["Day 1"]; let selectedConferenceDates = ["2027-01-03"];
 const inr = n => "₹" + Number(n).toLocaleString("en-IN");
 const sessionTimes = {A:"09:00–10:15 AM",B:"10:30–11:45 AM",C:"12:00–1:00 PM",D:"2:00–3:30 PM",E:"3:45–5:00 PM"};
 function conflictFor(e) {
@@ -441,14 +441,26 @@ function eventThumbnail(event){
 }
 
 /* Interactive RESMAGNA day selector and live countdown. */
-const conferenceDayDetails={"Day 1":{date:"SUNDAY, 3 JAN",title:"Day 1 · Sunday, 3 January",copy:"Explore workshops, clinical skills and academic competitions"},"Day 2":{date:"MONDAY, 4 JAN",title:"Day 2 · Monday, 4 January",copy:"Explore the workshops and competitions scheduled for this date"},"Day 3":{date:"TUESDAY, 5 JAN",title:"Day 3 · Tuesday, 5 January",copy:"Explore the workshops and competitions scheduled for this date"}};
-document.querySelectorAll("[data-conference-day]").forEach(button=>button.addEventListener("click",()=>{const day=button.dataset.conferenceDay,detail=conferenceDayDetails[day];document.querySelectorAll("[data-conference-day]").forEach(b=>{const active=b===button;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});document.getElementById("selectedDateLabel").textContent=day.toUpperCase()+" · "+detail.date;document.getElementById("dateDetail").innerHTML='<span class="detail-orb">✦</span><span><strong>'+detail.title+'</strong><small>'+detail.copy+'</small></span><span class="detail-arrow">↗</span>';activeFilter=day;document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b.dataset.filter===day));renderEvents();}));
+const conferencePackages={
+ "1":{days:["Day 1"],dates:["2027-01-03"],label:"3 JAN 2027 ONLY",title:"Sunday, 3 January 2027",copy:"Attendance selected for 3 January only"},
+ "2":{days:["Day 1","Day 2"],dates:["2027-01-03","2027-01-04"],label:"3–4 JAN 2027",title:"Sunday, 3 January to Monday, 4 January 2027",copy:"Attendance selected for 3 and 4 January"},
+ "3":{days:["Day 1","Day 2","Day 3"],dates:["2027-01-03","2027-01-04","2027-01-05"],label:"3–5 JAN 2027",title:"Sunday, 3 January to Tuesday, 5 January 2027",copy:"Attendance selected for all three conference days"}
+};
+function setAttendancePackage(packageId){
+ const pkg=conferencePackages[packageId]||conferencePackages["1"];
+ selectedConferenceDays=[...pkg.days];selectedConferenceDates=[...pkg.dates];
+ document.querySelectorAll("[data-conference-package]").forEach(button=>{const active=button.dataset.conferencePackage===String(packageId);button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));});
+ document.getElementById("selectedDateLabel").textContent=pkg.label;
+ document.getElementById("dateDetail").innerHTML='<span class="detail-orb">✦</span><span><strong>'+pkg.title+'</strong><small>'+pkg.copy+'</small></span><span class="detail-arrow">↗</span>';
+ renderEvents();
+}
+document.querySelectorAll("[data-conference-package]").forEach(button=>button.addEventListener("click",()=>setAttendancePackage(button.dataset.conferencePackage)));
 function updateConferenceCountdown(){const target=new Date("2027-01-03T09:00:00+05:30").getTime(),diff=Math.max(0,target-Date.now());const values={countDays:String(Math.floor(diff/86400000)).padStart(2,"0"),countHours:String(Math.floor(diff%86400000/3600000)).padStart(2,"0"),countMins:String(Math.floor(diff%3600000/60000)).padStart(2,"0"),countSecs:String(Math.floor(diff%60000/1000)).padStart(2,"0")};Object.entries(values).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.textContent=value;});}
 updateConferenceCountdown();setInterval(updateConferenceCountdown,1000);
 
 function renderEvents() {
  const root=document.getElementById("events");root.innerHTML="";
- eventData.filter(e=>activeFilter==="All"||e.day===activeFilter||(activeFilter==="Competition"&&e.type==="Competition")||(activeFilter==="Workshop"&&e.type==="Workshop")).forEach(e=>{
+ eventData.filter(e=>selectedConferenceDays.includes(e.day)&&(activeFilter==="All"||(activeFilter==="Competition"&&e.type==="Competition")||(activeFilter==="Workshop"&&e.type==="Workshop"))).forEach(e=>{
   const conflict=selected.has(e.id)?null:conflictFor(e),isSelected=selected.has(e.id),time=sessionTimes[e.slot];
   const conflictNote=conflict?'<div class="conflict-note">⏱ This overlaps with '+conflict.name+'. Choose a different time slot.</div>':"";
   const el=document.createElement("article");el.className="event"+(isSelected?" selected":"")+(conflict?" conflict":"");el.tabIndex=0;el.dataset.eventId=e.id;el.setAttribute("aria-label","Explore "+e.name);
@@ -499,7 +511,7 @@ document.getElementById("payBtn").addEventListener("click",async()=>{
  const p=participant();if(!valid(p))return;
  const button=document.getElementById("payBtn"),mobileButton=document.getElementById("mobilePayBtn"),original=button.textContent,loading=document.getElementById("paymentLoading");button.disabled=true;mobileButton.disabled=true;button.textContent="Preparing secure PayU checkout…";loading.classList.add("show");document.getElementById("loadingTitle").textContent="Preparing secure checkout";document.getElementById("loadingMessage").textContent="We’re validating your registration and creating your PayU payment request. Please keep this page open.";
  try {
-  const res=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({participant:p,privacyConsent:document.getElementById("privacyConsent").checked,eventIds:[...selected],food:document.getElementById("food").checked,accommodation:document.getElementById("stayPlus").checked?"private":(document.getElementById("stay").checked?"shared":"none")})});
+  const res=await fetch("/api/create-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({participant:p,privacyConsent:document.getElementById("privacyConsent").checked,eventIds:[...selected],attendanceDates:[...selectedConferenceDates],food:document.getElementById("food").checked,accommodation:document.getElementById("stayPlus").checked?"private":(document.getElementById("stay").checked?"shared":"none")})});
   const data=await res.json();if(!res.ok)throw new Error(data.error||"Could not create payment.");
   document.getElementById("loadingTitle").textContent="Connecting to PayU";document.getElementById("loadingMessage").textContent="Your registration reference is ready. Redirecting you to PayU’s secure payment page now. Do not refresh or close this page.";
   const form=document.createElement("form");form.method="POST";form.action=data.paymentUrl;
@@ -558,8 +570,8 @@ renderEvents();renderCart();
  });
  el("exportRegistrations").addEventListener("click", () => {
   if (!registrations.length) { el("adminMessage").className="verify-result bad";el("adminMessage").textContent="Load registrations before exporting.";return; }
-  const headers=["Created at","Transaction reference","Name","Email","Phone","College","Gender","Privacy consent","Consent timestamp","Course/year","Events","Event total","Food selected","Food amount","Accommodation","Accommodation amount","Total amount","Payment status","PayU transaction ID","PayU mode"];
-  const rows=registrations.map(r=>[r.created_at,r.txnid,r.name,r.email,r.phone,r.college,r.gender,r.privacy_consent,r.privacy_consent_at,r.course_year,(r.events||[]).map(e=>e.name||e.id||"").join("; "),r.event_total,r.food_selected,r.food_amount,r.accommodation,r.accommodation_amount,r.amount,r.payment_status,r.payu_txn_id,r.payu_mode]);
+   const headers=["Created at","Transaction reference","Name","Email","Phone","College","Gender","Privacy consent","Consent timestamp","Course/year","Attendance dates","Events","Event total","Food selected","Food amount","Accommodation","Accommodation amount","Total amount","Payment status","PayU transaction ID","PayU mode"];
+   const rows=registrations.map(r=>[r.created_at,r.txnid,r.name,r.email,r.phone,r.college,r.gender,r.privacy_consent,r.privacy_consent_at,r.course_year,(r.attendance_dates||[]).join("; "),(r.events||[]).map(e=>e.name||e.id||"").join("; "),r.event_total,r.food_selected,r.food_amount,r.accommodation,r.accommodation_amount,r.amount,r.payment_status,r.payu_txn_id,r.payu_mode]);
   const blob=new Blob(["\uFEFF"+[headers,...rows].map(row=>row.map(csvCell).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8;"});
   const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="resmagna-2027-registrations.csv";a.click();URL.revokeObjectURL(url);
  });
