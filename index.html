@@ -717,5 +717,44 @@ renderEvents();renderCart();
 }
 @media(max-width:850px){.checkout-layout{grid-template-columns:minmax(0,1fr)!important}.checkout-order,.checkout-form-panels{grid-area:auto!important}}
 </style>
+
+<style>
+/* Improve activity heading contrast and soften the date selector gradient */
+.date-picker-panel{
+ background:linear-gradient(120deg,#f5fbff 0%,#e5f8f5 52%,#eaf0ff 100%)!important;
+ border:1px solid #d7e8f2!important;
+ box-shadow:0 12px 28px #315c7915,inset 0 1px 0 #ffffff!important;
+ color:#18324a!important;
+}
+.date-picker-panel:before{display:block!important;background:#8fe7d855!important;filter:blur(28px)}
+.date-picker-panel .date-picker-heading h3,
+.date-picker-panel .date-picker-heading p,
+.date-picker-panel .date-selector-label,
+.date-picker-panel .date-selector-label small{color:#18324a!important}
+.date-picker-panel .date-picker-heading p{opacity:1!important;color:#5d7188!important}
+.date-picker-panel .date-selector{background:#ffffffa6!important;border:1px solid #d7e7f0!important}
+.date-picker-panel .date-option{background:#ffffffc9!important;border:1px solid #d4e3ed!important}
+.date-picker-panel .date-option span{color:#173a58!important}
+.date-picker-panel .date-option small,.date-picker-panel .date-option em{color:#60758b!important}
+.date-picker-panel .date-option.active{background:linear-gradient(145deg,#d9fff3,#dceaff)!important;border-color:#5a9eaa!important;box-shadow:0 4px 12px #235a641c!important}
+.date-picker-panel .date-option.active span,.date-picker-panel .date-option.active small,.date-picker-panel .date-option.active em{color:#174c59!important}
+.date-picker-panel .date-detail{background:#ffffffb8!important;border:1px solid #dbe8f0!important}
+.date-picker-panel .date-detail strong{color:#18324a!important}
+.date-picker-panel .date-detail small{color:#5d7188!important;opacity:1!important}
+.date-picker-panel .combined-activity-heading{
+ display:flex!important;visibility:visible!important;opacity:1!important;
+ border-top:1px solid #cbdde9!important;margin-top:16px!important;padding-top:15px!important;
+}
+.date-picker-panel .combined-activity-heading h3{color:#18324a!important;font-size:15px!important;font-weight:850!important}
+.date-picker-panel .combined-activity-heading p{color:#5d7188!important;font-size:11px!important}
+.date-picker-panel #filters{display:flex!important;visibility:visible!important;opacity:1!important;gap:8px!important;margin-top:10px!important}
+.date-picker-panel #filters .filter{
+ display:inline-flex!important;visibility:visible!important;opacity:1!important;
+ color:#23445e!important;background:#ffffffd9!important;border:1px solid #cbdde9!important;
+ padding:9px 13px!important;border-radius:999px!important;font-weight:800!important;
+}
+.date-picker-panel #filters .filter.active{background:linear-gradient(120deg,#c9f5e9,#d7e7ff)!important;border-color:#78b9b1!important;color:#164c59!important}
+</style>
+
 </body>
 </html>
