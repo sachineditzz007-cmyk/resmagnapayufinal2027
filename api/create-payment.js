@@ -15,6 +15,15 @@ module.exports = async (req, res) => {
     const year = String(p.year || "").trim().slice(0, 60);
     const diet = String(p.diet || "").trim().slice(0, 40);
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 10 || !college || !["Male", "Female"].includes(gender)) return res.status(400).json({ error: "Enter valid name, email, mobile, college and gender details." });
+    const attendanceDates = Array.isArray(body.attendanceDates) ? body.attendanceDates : [];
+    const allowedAttendance = [
+      ["2027-01-03"],
+      ["2027-01-03", "2027-01-04"],
+      ["2027-01-03", "2027-01-04", "2027-01-05"]
+    ];
+    if (!allowedAttendance.some(option => JSON.stringify(option) === JSON.stringify(attendanceDates))) {
+      return res.status(400).json({ error: "Choose attendance for 3 January, 3–4 January, or 3–5 January 2027." });
+    }
     const accommodation = body.accommodation || "none";
     const cart = calculate(body.eventIds, body.food, accommodation); // Never trust a browser-supplied amount.
     const amount = amountString(cart.total);
@@ -31,6 +40,7 @@ module.exports = async (req, res) => {
       txnid, name, email, phone, college, gender, course_year: year, food_preference: diet,
       privacy_consent: true, privacy_consent_at: new Date().toISOString(),
       attendance_token: crypto.randomBytes(24).toString("base64url"),
+      attendance_dates: attendanceDates,
       events: cart.events, event_ids: body.eventIds, event_total: cart.eventTotal,
       food_selected: body.food, food_amount: cart.foodTotal,
       accommodation, accommodation_amount: cart.accommodationTotal,
