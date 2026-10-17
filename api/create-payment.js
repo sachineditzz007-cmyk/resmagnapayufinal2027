@@ -34,6 +34,9 @@ module.exports = async (req, res) => {
       amount: cart.total, payment_status: "pending", productinfo
     });
     if (error) throw error;
+    // Keep Airtable current without blocking the participant's checkout if the sync service is unavailable.
+    try { await require("./_airtable").syncRegistration(txnid); }
+    catch (syncError) { console.error("Airtable pending sync error:", syncError.message); }
     // Send a registration acknowledgement with the current pending status. Email failure must not block checkout.
     try { await sendRegistrationEmail(txnid, "pending"); }
     catch (emailError) { console.error("Pending registration email error:", emailError.message); }
