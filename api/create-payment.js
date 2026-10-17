@@ -5,6 +5,7 @@ module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
   try {
     const body = req.body || {};
+    if (body.privacyConsent !== true) return res.status(400).json({ error: "Privacy notice consent is required before registration." });
     const p = body.participant || {};
     const name = String(p.name || "").trim().slice(0, 80);
     const email = String(p.email || "").trim().toLowerCase().slice(0, 160);
@@ -28,6 +29,7 @@ module.exports = async (req, res) => {
     const db = supabase();
     const { error } = await db.from("registrations").insert({
       txnid, name, email, phone, college, gender, course_year: year, food_preference: diet,
+      privacy_consent: true, privacy_consent_at: new Date().toISOString(),
       attendance_token: crypto.randomBytes(24).toString("base64url"),
       events: cart.events, event_ids: body.eventIds, event_total: cart.eventTotal,
       food_selected: body.food, food_amount: cart.foodTotal,
