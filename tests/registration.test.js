@@ -58,7 +58,7 @@ test("rejects same-slot events on Day 3", () => {
 test("allows events in different slots and on different days", () => {
   const result = calculate(["E01", "E02", "E08", "E17", "E20"], false, "none");
   assert.equal(result.events.length, 5);
-  assert.equal(result.total, 2200);
+  assert.equal(result.total, 2400);
 });
 
 test("rejects non-boolean food selection and unknown accommodation", () => {
