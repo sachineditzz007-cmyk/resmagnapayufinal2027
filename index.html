@@ -449,24 +449,23 @@ const conferenceDateInfo={
 function updateAttendanceSelection(){
  selectedConferenceDays=selectedConferenceDates.map(date=>conferenceDateInfo[date].day);
  const labels=selectedConferenceDates.map(date=>conferenceDateInfo[date].label);
- document.getElementById("selectedDateLabel").textContent=labels.length?labels.join(" + ")+" 2027":"NO DATES SELECTED";
+ document.getElementById("selectedDateLabel").textContent=labels.length?labels.join(" + ")+" 2027":"ALL DAYS · SHOWING ALL 20 ACTIVITIES";
  document.querySelectorAll("[data-conference-date]").forEach(button=>{
   const active=selectedConferenceDates.includes(button.dataset.conferenceDate);
   button.classList.toggle("active",active);button.setAttribute("aria-pressed",String(active));
   button.querySelector("em").textContent=active?"SELECTED":"SELECT DAY";
  });
- let removedCount=0;
- eventData.forEach(event=>{if(selected.has(event.id)&&!selectedConferenceDays.includes(event.day)){selected.delete(event.id);removedCount++;}});
  const allFilter=document.querySelector('#filters [data-filter="All"]');
- if(allFilter)allFilter.textContent="All "+eventData.filter(event=>selectedConferenceDays.includes(event.day)).length;
+ const visibleEvents=eventData.filter(event=>!selectedConferenceDates.length||selectedConferenceDays.includes(event.day));
+ if(allFilter)allFilter.textContent="All "+visibleEvents.length;
  const detail=document.getElementById("dateDetail");
  if(!labels.length){
-  detail.innerHTML='<span class="detail-orb">✦</span><span><strong>No dates selected</strong><small>Tap 3, 4 or 5 to choose your attendance dates.</small></span><span class="detail-arrow">↗</span>';
+  detail.innerHTML='<span class="detail-orb">✦</span><span><strong>All three days · all 20 activities</strong><small>Date filters are cleared. Your cart stays unchanged; select an attendance date before checkout.</small></span><span class="detail-arrow">↗</span>';
  }else{
   const titles=selectedConferenceDates.map(date=>conferenceDateInfo[date].title);
-  detail.innerHTML='<span class="detail-orb">✦</span><span><strong>'+titles.join(" · ")+'</strong><small>'+(removedCount?"Events on unselected dates were removed from your cart.":"Tap a date again to unselect it.")+'</small></span><span class="detail-arrow">↗</span>';
+  detail.innerHTML='<span class="detail-orb">✦</span><span><strong>'+titles.join(" · ")+'</strong><small>Showing activities for these dates. Your cart items stay unchanged.</small></span><span class="detail-arrow">↗</span>';
  }
- renderEvents();renderCart();
+ renderEvents();
 }
 document.querySelectorAll("[data-conference-date]").forEach(button=>button.addEventListener("click",()=>{
  const date=button.dataset.conferenceDate;
@@ -478,7 +477,7 @@ updateConferenceCountdown();setInterval(updateConferenceCountdown,1000);
 
 function renderEvents() {
  const root=document.getElementById("events");root.innerHTML="";
- eventData.filter(e=>selectedConferenceDays.includes(e.day)&&(activeFilter==="All"||(activeFilter==="Competition"&&e.type==="Competition")||(activeFilter==="Workshop"&&e.type==="Workshop"))).forEach(e=>{
+ eventData.filter(e=>(selectedConferenceDates.length===0||selectedConferenceDays.includes(e.day))&&(activeFilter==="All"||(activeFilter==="Competition"&&e.type==="Competition")||(activeFilter==="Workshop"&&e.type==="Workshop"))).forEach(e=>{
   const conflict=selected.has(e.id)?null:conflictFor(e),isSelected=selected.has(e.id),time=sessionTimes[e.slot];
   const conflictNote=conflict?'<div class="conflict-note">⏱ This overlaps with '+conflict.name+'. Choose a different time slot.</div>':"";
   const el=document.createElement("article");el.className="event"+(isSelected?" selected":"")+(conflict?" conflict":"");el.tabIndex=0;el.dataset.eventId=e.id;el.setAttribute("aria-label","Explore "+e.name);
@@ -600,17 +599,30 @@ renderEvents();renderCart();
 <script>
 (() => {
  const names={"Day 1":"Day One · Sunday, 3 January","Day 2":"Day Two · Monday, 4 January","Day 3":"Day Three · Tuesday, 5 January"};
+ const starts={A:"09:00",B:"10:30",C:"12:00",D:"02:00",E:"03:45"};
+ const ends={A:"10:15 AM",B:"11:45 AM",C:"01:00 PM",D:"03:30 PM",E:"05:00 PM"};
+ function renderProgramme(day){
+  const timeline=document.querySelector(".programme-timeline");
+  if(!timeline||typeof eventData==="undefined")return;
+  const activities=eventData.filter(e=>e.day===day).sort((a,b)=>a.slot.localeCompare(b.slot)||a.name.localeCompare(b.name));
+  if(!activities.length){timeline.innerHTML='<div class="empty">No activities are listed for this day yet.</div>';return;}
+  timeline.innerHTML=activities.map((e,i)=>{
+   const start=starts[e.slot]||"09:00",time=start.split(":")[0]+":"+start.split(":")[1];
+   const ampm=e.slot==="A"||e.slot==="B"||e.slot==="C"?"AM":"PM";
+   const slotLabel=(sessionTimes[e.slot]||"Time to be confirmed");
+   return '<div class="programme-item"><span class="programme-time">'+time+'<span>'+ampm+'</span></span><span class="programme-rail"><i></i></span><div class="programme-item-copy"><span class="programme-type">'+e.type+' · '+e.slot+'</span><strong>'+e.name+'</strong><small>'+slotLabel+' · '+e.desc+'</small></div><span class="programme-duration">'+(e.type==="Workshop"?"Workshop":e.type==="Competition"?"Competition":"Activity")+'</span></div>';
+  }).join("");
+  const note=document.querySelector(".programme-footnote");
+  if(note)note.innerHTML='<span class="programme-footnote-mark">i</span><span><strong>Planning note</strong> Activity names are drawn from the registration list. Session times are illustrative and require organizer confirmation; parallel activities may run together.</span>';
+ }
  document.querySelectorAll("[data-programme-day]").forEach(tab=>tab.addEventListener("click",()=>{
   const day=tab.dataset.programmeDay;
   document.querySelectorAll("[data-programme-day]").forEach(x=>{const active=x===tab;x.classList.toggle("active",active);x.setAttribute("aria-pressed",String(active));});
   const title=document.getElementById("programmeDayTitle");if(title)title.textContent=names[day];
-  if(typeof activeFilter!=="undefined"&&typeof renderEvents==="function"){
-   activeFilter=day;
-   document.querySelectorAll("#filters .filter").forEach(x=>x.classList.toggle("active",x.dataset.filter===day));
-   renderEvents();
-  }
+  renderProgramme(day);
  }));
  document.querySelectorAll("[data-programme-day]").forEach(x=>x.setAttribute("aria-pressed",String(x.classList.contains("active"))));
+ renderProgramme(document.querySelector("[data-programme-day].active")?.dataset.programmeDay||"Day 1");
 })();
 </script>
 
