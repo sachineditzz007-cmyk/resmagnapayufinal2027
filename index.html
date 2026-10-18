@@ -512,6 +512,7 @@ function renderEvents() {
  root.querySelectorAll(".event").forEach(card=>{card.addEventListener("click",ev=>{if(!ev.target.closest("button"))openEventDetails(card.dataset.eventId);});card.addEventListener("keydown",ev=>{if((ev.key==="Enter"||ev.key===" ")&&ev.target===card){ev.preventDefault();openEventDetails(card.dataset.eventId);}});});
 }
 let lastEventTrigger=null;
+let eventDetailHistoryOpen=false;
 function openEventDetails(id){
  const e=eventData.find(x=>x.id===id),d=eventDetails[id];if(!e||!d)return;
  document.getElementById("detailImage").src=eventImages[id]||eventArt[id];document.getElementById("detailImage").alt="Photo for "+e.name;document.getElementById("detailTitle").textContent=e.name;document.getElementById("detailContext").textContent=eventArtLabels[id];
@@ -519,9 +520,10 @@ function openEventDetails(id){
  document.getElementById("detailIntro").textContent=e.desc;document.getElementById("detailOutcomes").innerHTML=d.outcomes.map(x=>'<li>'+x+'</li>').join("");document.getElementById("detailFacilitator").textContent=d.lead;document.getElementById("detailTakeaway").textContent=d.takeaway;const facilityText=e.type==="Workshop"?"Planned facilities may include a guided demonstration, supervised hands-on practice where appropriate, and session materials.":"Planned facilities may include a dedicated activity area, instructions, required basic materials and organizer support.";document.getElementById("detailFacilities").textContent=facilityText+" Exact equipment, kits, venue arrangements and included resources are subject to final organizer confirmation.";
  const add=document.getElementById("detailAdd");add.dataset.id=id;add.textContent=selected.has(id)?"✓ Already in your cart":"＋ Add this event";add.disabled=!!(!selected.has(id)&&conflictFor(e));add.style.opacity=add.disabled?".55":"1";
  lastEventTrigger=document.activeElement;
- const backdrop=document.getElementById("eventDetailBackdrop");backdrop.classList.add("show");backdrop.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";document.getElementById("detailClose").focus();
+ const backdrop=document.getElementById("eventDetailBackdrop");if(!backdrop.classList.contains("show")){history.pushState({resmagnaEventDetail:true},"",location.href);eventDetailHistoryOpen=true;}backdrop.classList.add("show");backdrop.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";document.querySelector(".detail-modal").scrollTop=0;backdrop.scrollTop=0;document.getElementById("detailClose").focus();
 }
-function closeEventDetails(){const b=document.getElementById("eventDetailBackdrop");b.classList.remove("show");b.setAttribute("aria-hidden","true");document.body.style.overflow="";if(lastEventTrigger&&typeof lastEventTrigger.focus==="function")lastEventTrigger.focus();}
+function closeEventDetails(fromPopState=false){const b=document.getElementById("eventDetailBackdrop");if(!b.classList.contains("show"))return;b.classList.remove("show");b.setAttribute("aria-hidden","true");document.body.style.overflow="";if(eventDetailHistoryOpen&&!fromPopState){eventDetailHistoryOpen=false;history.back();}else{eventDetailHistoryOpen=false;}if(lastEventTrigger&&typeof lastEventTrigger.focus==="function")lastEventTrigger.focus();}
+window.addEventListener("popstate",()=>{const b=document.getElementById("eventDetailBackdrop");if(b.classList.contains("show"))closeEventDetails(true);});
 document.getElementById("detailClose").addEventListener("click",closeEventDetails);
 document.getElementById("eventDetailBackdrop").addEventListener("click",e=>{if(e.target.id==="eventDetailBackdrop")closeEventDetails();});
 document.getElementById("detailAdd").addEventListener("click",e=>{const id=e.currentTarget.dataset.id,event=eventData.find(x=>x.id===id);if(!event)return;if(selected.has(id)){closeEventDetails();return;}if(conflictFor(event)){document.getElementById("detailFacilitator").textContent="This session overlaps with another event in your cart. Remove the conflicting event first.";return;}selected.add(id);renderEvents();renderCart();closeEventDetails();});
@@ -965,6 +967,18 @@ renderEvents();renderCart();
 .cart-item{grid-template-columns:76px minmax(0,1fr) auto!important;align-items:center}
 .detail-hero img{object-fit:cover!important}
 @media(max-width:600px){.event-photo{height:clamp(112px,34vw,168px)}.event-content{padding:12px}.cart-thumb{width:60px!important;height:52px!important;flex-basis:60px!important}.cart-item{grid-template-columns:60px minmax(0,1fr) auto!important}}
+</style>
+<style id="photo-history-footer-fix">
+/* Use one matching topic photo consistently in the event card, details and cart. */
+.event-photo{display:block!important;width:100%!important;max-width:none!important;height:clamp(150px,22vw,210px)!important;object-fit:cover!important;object-position:center!important;border-radius:0!important}
+.event{padding:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important}
+.event-content{display:flex!important;flex-direction:column!important;flex:1!important;padding:14px 16px 15px!important;min-width:0!important}
+.cart-thumb{width:76px!important;height:60px!important;flex:0 0 76px!important;object-fit:cover!important;filter:none!important}
+.cart-item{grid-template-columns:76px minmax(0,1fr) auto!important;align-items:center!important}
+.detail-hero img{width:100%!important;max-height:280px!important;object-fit:cover!important;object-position:center!important}
+.detail-backdrop.show{overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+.detail-modal{max-height:calc(100dvh - 20px)!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important}
+@media(max-width:520px){body{padding-bottom:0!important}.event-photo{height:clamp(145px,43vw,190px)!important}.cart-thumb{width:60px!important;height:52px!important;flex-basis:60px!important}.cart-item{grid-template-columns:60px minmax(0,1fr) auto!important}.footer{padding-bottom:105px!important}.detail-backdrop.show{padding:8px!important}.detail-modal{max-height:calc(100dvh - 16px)!important}}
 </style>
 </body>
 </html>
