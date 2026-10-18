@@ -240,9 +240,24 @@
 @media(prefers-reduced-motion:reduce){.event,.pay,.mobile-checkout button,.add{transition:none!important}.event:hover,.pay:hover,.mobile-checkout button:hover,.add:hover{transform:none}}
 
 </style>
+
+<!-- Actual Liquid Glass library: SVG displacement refraction and specular diffraction -->
+<link rel="stylesheet" href="/liquid-glass.css">
+<style>
+/* Keep the header fixed while allowing its original links and controls to remain interactive. */
+header.top[data-liquid-glass]{position:sticky;top:0;z-index:80;isolation:isolate;overflow:visible!important;touch-action:pan-y!important;user-select:auto!important;-webkit-user-select:auto!important;cursor:default!important;transform:none!important}
+header.top[data-liquid-glass]>.brand,header.top[data-liquid-glass]>.top-nav,header.top[data-liquid-glass]>.pill{position:relative;z-index:4}
+.date-picker-panel .date-option[data-liquid-glass]{position:relative;isolation:isolate;overflow:hidden;touch-action:manipulation!important;user-select:none!important;cursor:pointer!important;transform:none!important}
+[data-liquid-glass]>.lg-content-clone{pointer-events:none!important}
+[data-liquid-glass]>.lg-content-clone>.lg-content-clone-inner{pointer-events:none!important}
+[data-liquid-glass]>.lg-inner{pointer-events:none!important}
+[data-liquid-glass].lg-element{transform:none!important;touch-action:pan-y!important;user-select:auto!important;-webkit-user-select:auto!important;cursor:default!important}
+.date-picker-panel .date-option[data-liquid-glass].lg-element{touch-action:manipulation!important;cursor:pointer!important}
+@media(prefers-reduced-motion:reduce){[data-liquid-glass].lg-element{transition:none!important}}
+</style>
 </head>
 <body>
-<header class="top">
+<header class="top" data-liquid-glass data-lg-surface="convex_squircle" data-lg-bezel="18" data-lg-thickness="100" data-lg-refraction="1.35" data-lg-specular="0.8" data-lg-children="true">
  <div class="brand">
   <div class="brand-emblems" aria-label="Medical emblem and college identification">
    <div class="medical-emblem" title="Medical emblem" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><circle cx="32" cy="32" r="29" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"/><path d="M32 12v40M21 22c-5 0-7 4-7 9 0 6 4 9 9 9h9M43 22c5 0 7 4 7 9 0 6-4 9-9 9h-9" fill="none" stroke="#9ff3e5" stroke-width="2.2" stroke-linecap="round"/><path d="M32 14c-5 3-7 7-7 11s4 6 7 8c3 2 7 4 7 9s-3 7-7 8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><path d="M22 14l10 5 10-5M22 50l10-5 10 5" fill="none" stroke="#9ff3e5" stroke-width="1.5" stroke-linecap="round"/></svg></div>
@@ -269,7 +284,7 @@
   <div class="event-grid" id="events"></div><p class="smallnote">Images are illustrative and sourced from Unsplash. Faculty names, final session plans, physical gifts and capacities will be published only after organizer confirmation.</p>
  </section>
  <aside class="side">
-  <div class="panel date-picker-panel"><div class="date-picker-heading"><span class="date-picker-icon">✦</span><div><h3>Choose your attendance dates</h3><p>Tap any date to select or unselect it. Any combination is allowed.</p></div></div><div class="date-selector-label"><span>Your attendance dates</span><small id="selectedDateLabel">ALL DAYS · SHOWING ALL 20 ACTIVITIES</small></div><div class="date-selector" role="group" aria-label="Choose individual attendance dates"><button class="date-option" type="button" data-conference-date="2027-01-03" aria-pressed="false"><span>3</span><small>JAN 2027</small><em>SELECT DAY</em></button><button class="date-option" type="button" data-conference-date="2027-01-04" aria-pressed="false"><span>4</span><small>JAN 2027</small><em>SELECT DAY</em></button><button class="date-option" type="button" data-conference-date="2027-01-05" aria-pressed="false"><span>5</span><small>JAN 2027</small><em>SELECT DAY</em></button></div><div class="date-detail" id="dateDetail"><span class="detail-orb">✦</span><span><strong>Sunday, 3 January 2027</strong><small>Selected for attendance</small></span><span class="detail-arrow">↗</span></div><div class="category-picker-heading combined-activity-heading"><span class="category-icon">✦</span><div><h3>Explore activities</h3><p>Filter the programme by activity type</p></div></div><div class="filterbar" id="filters"><button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Workshop">Workshops</button><button class="filter" data-filter="Competition">Competitions</button></div></div>  <div class="panel">
+  <div class="panel date-picker-panel"><div class="date-picker-heading"><span class="date-picker-icon">✦</span><div><h3>Choose your attendance dates</h3><p>Tap any date to select or unselect it. Any combination is allowed.</p></div></div><div class="date-selector-label"><span>Your attendance dates</span><small id="selectedDateLabel">ALL DAYS · SHOWING ALL 20 ACTIVITIES</small></div><div class="date-selector" role="group" aria-label="Choose individual attendance dates"><button class="date-option" data-liquid-glass data-lg-surface="convex_squircle" data-lg-bezel="10" data-lg-thickness="65" data-lg-refraction="1.15" data-lg-specular="0.75" data-lg-children="true" type="button" data-conference-date="2027-01-03" aria-pressed="false"><span>3</span><small>JAN 2027</small><em>SELECT DAY</em></button><button class="date-option" type="button" data-conference-date="2027-01-04" aria-pressed="false"><span>4</span><small>JAN 2027</small><em>SELECT DAY</em></button><button class="date-option" type="button" data-conference-date="2027-01-05" aria-pressed="false"><span>5</span><small>JAN 2027</small><em>SELECT DAY</em></button></div><div class="date-detail" id="dateDetail"><span class="detail-orb">✦</span><span><strong>Sunday, 3 January 2027</strong><small>Selected for attendance</small></span><span class="detail-arrow">↗</span></div><div class="category-picker-heading combined-activity-heading"><span class="category-icon">✦</span><div><h3>Explore activities</h3><p>Filter the programme by activity type</p></div></div><div class="filterbar" id="filters"><button class="filter active" data-filter="All">All 20</button><button class="filter" data-filter="Workshop">Workshops</button><button class="filter" data-filter="Competition">Competitions</button></div></div>  <div class="panel">
    <div class="panel-head"><h3>🛒 Your event cart</h3><span class="count" id="count" aria-live="polite" aria-atomic="true">0 selected</span></div>
    <div id="cartList" class="cart-list"><div class="empty">Your cart is waiting for its first event. Pick an activity to begin.</div></div>
    <button class="toggle" id="toggleCart" style="display:none">Show all selected events ↓</button>
@@ -1035,6 +1050,29 @@ renderEvents();renderCart();
 @media(max-width:600px){.event-photo{height:clamp(145px,43vw,185px)!important}.event-content{padding:13px!important}.event h4{font-size:14px!important}.detail-hero img{height:160px!important}}
 @media(prefers-reduced-motion:reduce){.event,.event:hover{transition:none!important;transform:none!important}}
 </style>
+
+
+<script src="/liquid-glass.umd.js"></script>
+<script>
+(function(){
+ function initResmagnaLiquidGlass(){
+  if(!window.LiquidGlass || window.__resmagnaLiquidGlassInitialized) return;
+  window.__resmagnaLiquidGlassInitialized=true;
+  try {
+   window.__resmagnaLiquidGlassInstances=window.LiquidGlass.autoInit();
+   (window.__resmagnaLiquidGlassInstances||[]).forEach(function(instance){
+    if(instance && typeof instance.setOptions==="function"){
+     instance.setOptions({draggable:false,springAnimation:true,applyToChildren:true});
+    }
+   });
+  } catch(error) {
+   console.warn("Liquid Glass could not initialize; standard page styling remains available.",error);
+  }
+ }
+ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initResmagnaLiquidGlass,{once:true});
+ else initResmagnaLiquidGlass();
+})();
+</script>
 
 </body>
 </html>
