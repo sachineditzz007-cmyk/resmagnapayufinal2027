@@ -649,7 +649,14 @@ renderEvents();renderCart();
 .date-picker-panel .date-detail small{font-size:11px;line-height:1.5;color:var(--muted);margin-top:4px}
 .choice-shell{padding-left:10px}
 .choice-shell select{padding-left:2px!important}
-#checkoutStep{display:none;max-width:1180px;margin:0 auto;padding:14px 20px 60px}
+#participantTransition{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(8,24,45,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .12s ease,visibility .12s ease}
+ #participantTransition.show{opacity:1;visibility:visible}
+ .participant-transition-card{width:min(360px,100%);padding:28px 24px;border-radius:20px;background:#fff;text-align:center;box-shadow:0 24px 70px #0004}
+ .participant-transition-spinner{width:38px;height:38px;border:3px solid #dce8f5;border-top-color:#2463eb;border-right-color:#0e8278;border-radius:50%;animation:spin .65s linear infinite;margin:0 auto 15px}
+ .participant-transition-card strong{display:block;color:var(--navy);font-size:17px}
+ .participant-transition-card p{margin:7px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+ @media(prefers-reduced-motion:reduce){#participantTransition{transition:none}.participant-transition-spinner{animation:none}}
+ #checkoutStep{display:none;max-width:1180px;margin:0 auto;padding:14px 20px 60px}
 #checkoutStep.active{display:block}
 .checkout-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}
 .checkout-head h2{margin:0;color:var(--navy);font-size:clamp(24px,3vw,34px);letter-spacing:-.03em}
@@ -681,6 +688,10 @@ renderEvents();renderCart();
  const checkout=document.createElement("section");
  checkout.id="checkoutStep";
  checkout.innerHTML='<div class="checkout-head"><div><h2>Complete your registration</h2><p>Your selected events are saved. Enter participant details and review any optional add-ons before payment.</p></div><span class="step-pill">STEP 2 OF 2 · CHECKOUT</span></div><div class="checkout-layout"><div class="checkout-form-panels"></div><aside class="checkout-order"><div class="panel"><div class="panel-head"><h3>Order summary</h3><span class="count" id="checkoutCount">0 selected</span></div><div id="checkoutCartList" class="cart-list"></div><div class="cart-summary"><span>Selected events</span><strong id="checkoutEventSubtotal">₹0</strong></div><p class="smallnote">Your final total, including food and accommodation if selected, is shown in the checkout panel.</p></div><div class="checkout-nav"><button type="button" id="backToEvents">← Back to events</button></div></aside></div>';
+ const transition=document.createElement("div");
+ transition.id="participantTransition";transition.setAttribute("role","status");transition.setAttribute("aria-live","polite");
+ transition.innerHTML='<div class="participant-transition-card"><div class="participant-transition-spinner" aria-hidden="true"></div><strong>Preparing participant details</strong><p>Keeping your selected events ready…</p></div>';
+ document.body.appendChild(transition);
  root.insertAdjacentElement("afterend",checkout);
  const formPanels=checkout.querySelector(".checkout-form-panels");
  formPanels.append(participantPanel,extrasPanel);
@@ -705,18 +716,29 @@ renderEvents();renderCart();
   checkout.querySelector("#checkoutCount").textContent=count;
   checkout.querySelector("#checkoutEventSubtotal").textContent=document.getElementById("eventSubtotal")?.textContent||"₹0";
  }
+ let checkoutTransitioning=false;
  function showCheckout(){
+  if(checkout.classList.contains("active")||checkoutTransitioning)return;
   if(!document.querySelectorAll("#events .event.selected").length){
    status.textContent="Please add at least one event to your cart before continuing.";
    status.style.color="#a12d36";
    cartPanel.scrollIntoView({behavior:"smooth",block:"center"});
    return;
   }
-  root.classList.add("checkout-hidden");
-  checkout.classList.add("active");
+  checkoutTransitioning=true;
+  transition.classList.add("show");
+  continueButton.disabled=true;
   if(mobile)mobile.style.display="none";
-  refreshOrder();
-  window.scrollTo({top:checkout.offsetTop-12,behavior:"smooth"});
+  window.setTimeout(()=>{
+   root.classList.add("checkout-hidden");
+   checkout.classList.add("active");
+   refreshOrder();
+   transition.classList.remove("show");
+   checkoutTransitioning=false;
+   continueButton.disabled=false;
+   // Switch directly to the checkout heading, without a smooth scroll through the previous page.
+   checkout.scrollIntoView({behavior:"auto",block:"start"});
+  },500);
  }
  function showEvents(){
   checkout.classList.remove("active");
