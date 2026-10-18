@@ -16,14 +16,19 @@ module.exports = async (req, res) => {
     const diet = String(p.diet || "").trim().slice(0, 40);
     if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 10 || !college || !["Male", "Female"].includes(gender)) return res.status(400).json({ error: "Enter valid name, email, mobile, college and gender details." });
     const validAttendanceDates = new Set(["2027-01-03", "2027-01-04", "2027-01-05"]);
-    const attendanceDates = Array.isArray(body.attendanceDates)
+    // Keep the date-picker choices separately, then derive effective attendance from both
+    // explicit date selections and the days of the server-validated events in the cart.
+    const datesSelected = Array.isArray(body.attendanceDates)
       ? [...new Set(body.attendanceDates.filter(date => validAttendanceDates.has(date)))].sort()
       : [];
-    if (attendanceDates.length === 0) {
-      return res.status(400).json({ error: "Please select at least one attendance date: 3, 4 or 5 January 2027." });
-    }
     const accommodation = body.accommodation || "none";
     const cart = calculate(body.eventIds, body.food, accommodation); // Never trust a browser-supplied amount.
+    const eventDayToDate = { "Day 1": "2027-01-03", "Day 2": "2027-01-04", "Day 3": "2027-01-05" };
+    const eventDates = cart.events.map(event => eventDayToDate[event.day]).filter(Boolean);
+    const attendanceDates = [...new Set([...datesSelected, ...eventDates])].sort();
+    if (attendanceDates.length === 0) {
+      return res.status(400).json({ error: "Select at least one attendance date or choose an event scheduled on a conference date." });
+    }
     const amount = amountString(cart.total);
     const txnid = "RM27" + Date.now().toString(36).toUpperCase() + crypto.randomBytes(5).toString("hex").toUpperCase();
     const productinfo = "RESMAGNA 2027 Registration";
@@ -38,7 +43,7 @@ module.exports = async (req, res) => {
       txnid, name, email, phone, college, gender, course_year: year, food_preference: diet,
       privacy_consent: true, privacy_consent_at: new Date().toISOString(),
       attendance_token: crypto.randomBytes(24).toString("base64url"),
-      attendance_dates: attendanceDates,
+      dates_selected: datesSelected, attendance_dates: attendanceDates,
       events: cart.events, event_ids: body.eventIds, event_total: cart.eventTotal,
       food_selected: body.food, food_amount: cart.foodTotal,
       accommodation, accommodation_amount: cart.accommodationTotal,
